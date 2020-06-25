@@ -31,13 +31,16 @@
     opacity: 0;
   }
 }
+html, body {
+  cursor : none;
+}
 body {
   background-color: black;
 }
 
 .terminal {
   position: relative;
-  padding: 4rem;
+  padding-top: 50px;
 }
 .terminal .prompt {
   color: #1ff042;
@@ -59,7 +62,7 @@ body {
   display: inline-block;
 }
 
-.terminal .new-output:after {
+.terminal .new-output:after { /* cursor blink taken from a codepen */
   display: inline-block;
   vertical-align: -0.15em;
   width: 0.75em;

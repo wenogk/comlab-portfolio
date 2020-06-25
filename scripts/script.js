@@ -10,6 +10,9 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
     } else if (event.keyCode >= 65 && event.keyCode <= 90) { //if letter a-z
       currentCommandTyped+=letter;
       $(".new-output").text(currentCommandTyped)
+    } else if(event.keyCode === 189) { // dash key "-"
+     currentCommandTyped+="-";
+     $(".new-output").text(currentCommandTyped)
     } else if(event.keyCode === 32) { // space bar hit
       console.log("space")
       currentCommandTyped+=" ";
@@ -22,22 +25,25 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
     }
 };
 
-function printOnTerminal(txt="", newPrompt = true) {
+function printOnTerminal(txt="") {
   $('.new-output').removeClass('new-output');
-  $('.terminal').append(`<p class="prompt output ${(newPrompt) ? "new-output" : ""}">${txt}</p>`);
+  if(txt!="") {
+    $('.terminal').append(`<p class="prompt output">${txt}</p><p class="prompt output new-output"></p>`);
+  } else{
+    $('.terminal').append(`<p class="prompt output new-output"></p>`);
+  }
 }
 
 function runCommand(command) {
   let c = command.replace(/\s+/g,' ').trim(); //remove any extra white space on either end of string
   if(c=="clear") {
     $('.terminal').html(`<p class="prompt output new-output"></p>`);
-  } else if(c=="") {
-    printOnTerminal();
+  } else if(c=="help") {
+    printOnTerminal("Commands available are: clear");
   } else if(c=="") {
     printOnTerminal();
   } else {
-    printOnTerminal(`Oops. That command is not recognized. Type in "help"`, false)
-    printOnTerminal();
+    printOnTerminal(`Oops. That command is not recognized. Type in "help"`)
   }
   currentCommandTyped = ""
   $(".new-output").get(0).scrollIntoView();

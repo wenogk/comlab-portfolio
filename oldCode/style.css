@@ -1,0 +1,13 @@
+body {
+  font-size: 12px;
+  font-family: Arial;
+  font-weight: bold;
+  background: black;
+  color: green;
+}
+
+.plane {
+  position: absolute;
+  bottom:0;
+  left:0;
+}

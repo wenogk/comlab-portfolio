@@ -18,27 +18,27 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
       currentCommandTyped = currentCommandTyped.slice(0,-1); //remove last character
       $(".new-output").text(currentCommandTyped)
     } else if(event.keyCode === 13) { // enter key hit
-      var val = $(this).children($('.404-input')).val().toLowerCase();
-      var href;
-      if(currentCommandTyped=="clear") {
-        $('.terminal').html("");
-      }
-      resetCurrentCommand();
+      runCommand(currentCommandTyped);
     }
 };
 
-function resetCurrentCommand() {
-  let message = "Oops. That command is not recognized."
-  let cleanCommand = currentCommandTyped.replace(/\s+/g,' ').trim();
+function printOnTerminal(txt="", newPrompt = true) {
   $('.new-output').removeClass('new-output');
-  if(cleanCommand=="") {
-    message="";
-    $('.terminal').append('<p class="prompt output new-output"></p>');
+  $('.terminal').append(`<p class="prompt output ${(newPrompt) ? "new-output" : ""}">${txt}</p>`);
+}
+
+function runCommand(command) {
+  let c = command.replace(/\s+/g,' ').trim(); //remove any extra white space on either end of string
+  if(c=="clear") {
+    $('.terminal').html(`<p class="prompt output new-output"></p>`);
+  } else if(c=="") {
+    printOnTerminal();
+  } else if(c=="") {
+    printOnTerminal();
   } else {
-    $('.terminal').append(`<p class="prompt output">${message}</p><p class="prompt output new-output"></p>`);
+    printOnTerminal(`Oops. That command is not recognized. Type in "help"`, false)
+    printOnTerminal();
   }
-
-
   currentCommandTyped = ""
   $(".new-output").get(0).scrollIntoView();
 }

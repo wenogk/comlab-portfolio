@@ -47,63 +47,65 @@ function runCommand(command) {
   if(c=="clear") {
     $('.terminal').html(`<p class="prompt output new-output"></p>`);
   } else if(c=="help") {
-    printOnTerminal("▬▬ι═══════ﺤ Commands available are: projects, about, message, clear  -═══════ι▬▬");
+    printOnTerminal("Commands available are: projects, about, message, clear");
   } else if(c=="projects") {
-    var table = new AsciiTable('Projects')
+    var table = new AsciiTable('Comlab Projects')
 table
   .setHeading('Name','Command for more info')
-  .addRow('Convinience Store Tour', "a1")
-  .addRow('Period.s comic', "a2")
-  .addRow('Flight: A turbulent experience', "a3")
-  .addRow('GTA NYU Abu Dhabi', "a4")
+  .addRow('Convinience Store Tour', "p1")
+  .addRow('Period.s comic', "p2")
+  .addRow('Flight: A turbulent experience', "p3")
+  .addRow('GTA NYU Abu Dhabi', "p4")
 
 printOnTerminal("<br />"+ table.toString())
 
 } else if(c.startsWith("open ") && args.length>1) {
   switch(args[1]) {
-    case "a1":
+    case "p1":
       openUrl("https://wenogk.github.io/comlab-assignment-1/")
       printOnTerminal()
       break;
-    case "a2":
+    case "p2":
       openUrl("https://wenogk.github.io/comic-strip/")
       printOnTerminal()
       break;
-    case "a3":
+    case "p3":
       openUrl("https://wenogk.github.io/sound-journey")
       printOnTerminal()
       break;
-    case "a4":
+    case "p4":
       openUrl("https://wenogk.github.io/gta-nyuad")
       printOnTerminal()
       break;
     default:
-      printOnTerminal("Incorrect assignment name. Options are a1, a2, a3 or a4.")
+      printOnTerminal("Incorrect assignment name. Options are p1, p2, p3 or p4.")
   }
 
 } else if((c.startsWith("doc ") || c.startsWith("docs ")) && args.length>1) {
   switch(args[1]) {
-    case "a1":
+    case "p1":
       openUrl("https://github.com/wenogk/comlab-assignment-1/")
       printOnTerminal()
       break;
-    case "a2":
+    case "p2":
       openUrl("https://github.com/wenogk/comic-strip/")
       printOnTerminal()
       break;
-    case "a3":
+    case "p3":
       openUrl("https://github.com/wenogk/sound-journey")
       printOnTerminal()
       break;
-    case "a4":
+    case "p4":
       openUrl("https://github.com/wenogk/gta-nyuad")
       printOnTerminal()
       break;
     default:
-      printOnTerminal("Incorrect assignment name. Options are a1, a2, a3 or a4.")
+      printOnTerminal("Incorrect assignment name. Options are p1, p2, p3 or p4.")
   }
 
-} else if(c=="") {
+} else if(c=="about") {
+    printOnTerminal("My name is Romeno Wenogk Fernando. I'm Sri Lankan and currently studying at New York University Abu Dhabi.");
+  } else if(c=="") {
     printOnTerminal();
   } else {
     printOnTerminal(`Oops. That command is not recognized. Type in "help"`)

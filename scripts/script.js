@@ -63,10 +63,46 @@ printOnTerminal("<br />"+ table.toString())
   switch(args[1]) {
     case "a1":
       openUrl("https://wenogk.github.io/comlab-assignment-1/")
+      printOnTerminal()
+      break;
+    case "a2":
+      openUrl("https://wenogk.github.io/comic-strip/")
+      printOnTerminal()
+      break;
+    case "a3":
+      openUrl("https://wenogk.github.io/sound-journey")
+      printOnTerminal()
+      break;
+    case "a4":
+      openUrl("https://wenogk.github.io/gta-nyuad")
+      printOnTerminal()
+      break;
     default:
-      printOnTerminal("Incorrect assignment name.")
+      printOnTerminal("Incorrect assignment name. Options are a1, a2, a3 or a4.")
   }
-  printOnTerminal("Open the assignment " + args[1])
+
+} else if((c.startsWith("doc ") || c.startsWith("docs ")) && args.length>1) {
+  switch(args[1]) {
+    case "a1":
+      openUrl("https://github.com/wenogk/comlab-assignment-1/")
+      printOnTerminal()
+      break;
+    case "a2":
+      openUrl("https://github.com/wenogk/comic-strip/")
+      printOnTerminal()
+      break;
+    case "a3":
+      openUrl("https://github.com/wenogk/sound-journey")
+      printOnTerminal()
+      break;
+    case "a4":
+      openUrl("https://github.com/wenogk/gta-nyuad")
+      printOnTerminal()
+      break;
+    default:
+      printOnTerminal("Incorrect assignment name. Options are a1, a2, a3 or a4.")
+  }
+
 } else if(c=="") {
     printOnTerminal();
   } else {

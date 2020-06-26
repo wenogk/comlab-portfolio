@@ -101,11 +101,18 @@ function sendMessage(message) {
         {
             if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
             {
-                alert(xmlHttp.responseText);
+              msgSuccess(); //console.log(xmlHttp.responseText);
             }
         }
         xmlHttp.open("post", "https://formsubmit.co/ajax/drf325@nyu.edu");
         xmlHttp.send(formData);
+}
+
+function msgSuccess() {
+  printOnTerminal("Your message was sent directly to Romeno's email.")
+}
+function msgFail() {
+  printOnTerminal("Error occured when sending message.")
 }
 function openUrl(url) {
   var win = window.open(url, '_blank');
@@ -274,7 +281,6 @@ printOnTerminal("<br />"+ table.toString())
     printOnTerminal()
   } else if(c.startsWith("message") && args.length > 1) {
     sendMessage(currentCommandTyped);
-    printOnTerminal("Emailed romeno your message.");
   } else if(c=="logout") {
     window.localStorage.clear();
     location.reload();

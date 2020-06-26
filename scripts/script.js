@@ -1,7 +1,12 @@
 let currentCommandTyped = "";
-let commandContext = "";
+let commandContext = "Enter Username > ";
 let commandHistory = [];
 let commandHistoryMarker = 0;
+let username = "";
+let password = "";
+let authorized = false;
+let enterUsernameMode = true;
+let enterPasswordMode = false;
 
 function $(selector) { //to remove the jQuery dependancy from the code with minimal changes, I rewrote only the functions I needed
 return document.querySelector(selector);
@@ -31,13 +36,9 @@ HTMLElement.prototype.removeClass = function(remove) {
     this.className = newClassName;
 }
 
-//ELEMENT.classList.remove("CLASS_NAME");
-
 document.onkeydown = function(e) { //key press event listener for terminal typing
     e = e || window.event;
-    if (e.ctrlKey || e.metaKey) {
-      return;
-    }
+    if (e.ctrlKey || e.metaKey) { return;} //to ignore when cmd+r / ctrl+r is pressed
     console.log(event.keyCode + " pressed!")
     var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
     let letter = String.fromCharCode(charCode).toLowerCase(); //char number to actual letter which is then forced to lowercase so even upper case cheat codes r good
@@ -58,7 +59,12 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
       currentCommandTyped = currentCommandTyped.slice(0,-1); //remove last character
       $(".new-output").text(currentCommandTyped)
     } else if(event.keyCode === 13) { // enter key hit
-      runCommand(currentCommandTyped);
+      console.log(`authorized: ${authorized}, usernameMode: ${enterUsernameMode}, passwordMode: ${enterPasswordMode}`)
+      if(!authorized) {
+        authorization(currentCommandTyped);
+      } else {
+        runCommand(currentCommandTyped);
+      }
     } else if (event.keyCode === 38) { //up arrow key for back
       e.preventDefault();
       if(commandHistoryMarker>0){
@@ -87,9 +93,27 @@ function openUrl(url) {
 function printOnTerminal(txt="",noBefore = false) {
   $('.new-output').removeClass('new-output');
   if(txt!="") {
-    $('.terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output">${txt}</p><p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output"></p>`);
+    $('.terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output" command-context="${commandContext}">${txt}</p><p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`);
   } else{
-    $('.terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output"></p>`);
+    $('.terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`);
+  }
+}
+
+function authorization(value) {
+  if(enterUsernameMode) {
+    username = value;
+    enterUsernameMode = false;
+    enterPasswordMode = true;
+    commandContext = "Set password: ";
+    currentCommandTyped = "";
+    printOnTerminal();
+  } else if(enterPasswordMode) {
+    password = value;
+    enterPasswordMode = false;
+    authorized = true;
+    commandContext = username + "@portfolio > ";
+    currentCommandTyped = "";
+    runCommand("clear");
   }
 }
 
@@ -109,7 +133,7 @@ function runCommand(command , saveToHistory = true) {
       </div>
       </div>
       </div>
-    <p class="prompt output new-output"></p>`);
+    <p class="prompt output new-output" command-context="${commandContext}"></p>`);
   } else if(c=="help") {
     printOnTerminal("Commands available are: projects, about, message, clear. As you type in commands you can reuse your previous commands by using the up and down arrow.");
   } else if(c=="projects") {
@@ -237,11 +261,6 @@ printOnTerminal("<br />"+ table.toString())
     }
   }
   commandHistoryMarker = commandHistory.length;
-  if(keepCommandContext) {
-    commandContext = command;
-  } else {
-    commandContext = "";
-  }
   currentCommandTyped = ""
   $(".new-output").scrollIntoView();
 }

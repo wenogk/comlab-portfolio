@@ -54,8 +54,8 @@ body {
   line-height: 1.5;
   margin-bottom: 0.75em;
 }
-.terminal .prompt:before {
-  content: 'romeno@portfolio: > ';
+ .terminal .prompt:before {
+  content: attr(command-context);
   display: inline-block;
 }
 .terminal .promptNoBefore {

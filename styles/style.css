@@ -40,7 +40,7 @@ body {
 
 .terminal {
   position: relative;
-  padding-top: 50px;
+  padding-top: 25px;
 }
 .terminal .prompt {
   color: #1ff042;
@@ -51,11 +51,11 @@ body {
   letter-spacing: 0.15em;
   white-space: pre-wrap;
   text-shadow: 0 0 2px rgba(31, 240, 66, 0.75);
-  line-height: 1.2;
+  line-height: 1.5;
   margin-bottom: 0.75em;
 }
 .terminal .prompt:before {
-  content: '> ';
+  content: 'romeno@portfolio: > ';
   display: inline-block;
 }
 .terminal .promptNoBefore {
@@ -67,12 +67,13 @@ body {
   letter-spacing: 0.15em;
   white-space: pre-wrap;
   text-shadow: 0 0 2px rgba(31, 240, 66, 0.75);
-  line-height: 1.2;
+  line-height: 1.5;
   margin-bottom: 0.75em;
 }
 
 .terminal .new-output {
   display: inline-block;
+  line-height: 1.5;
 }
 
 .terminal .new-output:after { /* cursor blink taken from a codepen */

@@ -27,8 +27,9 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
 };
 
 function openUrl(url) {
-  var win = window.open(url, '_blank');
-  win.focus();
+  // var win = window.open(url, '_blank');
+  // win.focus();
+  document.location.href = url;
 }
 function printOnTerminal(txt="",noBefore = false) {
   $('.new-output').removeClass('new-output');
@@ -45,7 +46,19 @@ function runCommand(command) {
   let c = command.replace(/\s+/g,' ').trim(); //remove any extra white space on either end of string
   let args = c.split(' ')
   if(c=="clear") {
-    $('.terminal').html(`<p class="prompt output new-output"></p>`);
+    $('.terminal').html(`
+      <div class="container d-flex h-100">
+      <div class="row ">
+      <div class="col-auto promptNoBefore justify-content-center align-self-center" style="font-size: 4px">
+        <pre style="color: #1ff042; ">
+          ${ME}
+        </pre>
+      </div>
+      <div class="col promptNoBefore align-middle justify-content-center align-self-center">Hello, my name is Romeno! Type in, "help" and hit enter to get the available commands</div>
+      </div>
+      </div>
+      </div>
+    <p class="prompt output new-output"></p>`);
   } else if(c=="help") {
     printOnTerminal("Commands available are: projects, about, message, clear");
   } else if(c=="projects") {
@@ -104,16 +117,24 @@ printOnTerminal("<br />"+ table.toString())
   }
 
 } else if(c=="about") {
-    printOnTerminal(`Not implemented yet.`);
+    printOnTerminal(`
+      <div class="col-auto" style="font-size: 5px">
+      <pre style="color: grey; ">
+        ${ME}
+      </pre>
+      </div>
+      Not implemented yet.`);
   } else if(c=="p1") {
     printOnTerminal(`
+      <div class="container d-flex h-100">
       <div class="row">
-      <div class="col-auto" style="font-size: 5px">
+      <div class="col-auto promptNoBefore justify-content-center align-self-center" style="font-size: 5px">
         <pre style="color: #1ff042; ">
           ${NYU_TORCH}
         </pre>
       </div>
-      <div class="col promptNoBefore">A student life tours website with a tour of the convinience store. The idea of the website is to keep it as close as possible to the NYU guidelines and invite viewers to sign up for tours on campus. <br /><br />Type in "open p1" to see the project live or "doc p1" to see the documentation</div>
+      <div class="col promptNoBefore align-middle justify-content-center align-self-center">A student life tours website with a tour of the convinience store. The idea of the website is to keep it as close as possible to the NYU guidelines and invite viewers to sign up for tours on campus. <br /><br />Type in "open p1" to see the project live or "doc p1" to see the documentation</div>
+      </div>
       </div>
       `, true)
     printOnTerminal()
@@ -122,7 +143,19 @@ printOnTerminal("<br />"+ table.toString())
   } else if(c=="p3") {
     printOnTerminal(`A turbulent sound journey in a plane. Type in "open p3" to see the project live or "doc p3" to see the documentation`)
   } else if(c=="p4") {
-    printOnTerminal(`Grand Theft Auto themed NYUAD experience. Type in "open p4" to see the project live or "doc p4" to see the documentation`)
+    printOnTerminal(`
+      <div class="container d-flex h-100">
+      <div class="row">
+      <div class="col-auto promptNoBefore justify-content-center align-self-center" style="font-size: 5px">
+        <pre style="color: #1ff042; ">
+          ${GTA}
+        </pre>
+      </div>
+      <div class="col promptNoBefore align-middle justify-content-center align-self-center">Grand Theft Auto themed NYUAD experience. <br/><br/> Type in "open p4" to see the project live or "doc p4" to see the documentation</div>
+      </div>
+      </div>
+      `, true)
+    printOnTerminal()
   } else if(c=="message") {
     printOnTerminal("Not implemented yet.");
   } else if(c=="") {
@@ -138,3 +171,5 @@ printOnTerminal("<br />"+ table.toString())
   currentCommandTyped = ""
   $(".new-output").get(0).scrollIntoView();
 }
+
+runCommand("clear");

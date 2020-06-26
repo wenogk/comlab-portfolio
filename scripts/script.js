@@ -7,7 +7,7 @@ let password = "";
 let authorized = false;
 let enterUsernameMode = true;
 let enterPasswordMode = false;
-
+let enterMessageMode = false;
 function $(selector) { //to remove the jQuery dependancy from the code with minimal changes, I rewrote only the functions I needed
 return document.querySelector(selector);
 }
@@ -71,7 +71,14 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
       if(!authorized) {
         authorization(currentCommandTyped);
       } else {
-        runCommand(currentCommandTyped);
+        if(enterMessageMode) {
+          sendMessage(currentCommandTyped);
+          enterMessageMode = false;
+          commandContext = username + "@portfolio > ";
+          currentCommandTyped = "";
+        } else {
+          runCommand(currentCommandTyped);
+        }
       }
     } else if (event.keyCode === 38) { //up arrow key for back
       e.preventDefault();
@@ -230,7 +237,7 @@ printOnTerminal("<br />"+ table.toString())
   }
 
 } else if(c=="about") {
-    printOnTerminal(`Not implemented yet.`);
+    printOnTerminal(`I'm Sri Lankan and currently studying Computer Science at New York University Abu Dhabi. I'm really like backend development and am currently learning iOS app development in Swift. In my free time I like to play pool, table tennis and watch tv shows with my friends.`);
   } else if(c=="p1") {
     printOnTerminal(`
       <div class="container d-flex h-100">
@@ -279,8 +286,10 @@ printOnTerminal("<br />"+ table.toString())
       </div>
       `, true)
     printOnTerminal()
-  } else if(c.startsWith("message") && args.length > 1) {
-    sendMessage(currentCommandTyped);
+  } else if(c=="message") {
+    commandContext = "Enter Message > ";
+    printOnTerminal();
+    enterMessageMode = true;
   } else if(c=="logout") {
     window.localStorage.clear();
     location.reload();

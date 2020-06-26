@@ -2,6 +2,37 @@ let currentCommandTyped = "";
 let commandContext = "";
 let commandHistory = [];
 let commandHistoryMarker = 0;
+
+function $(selector) { //to remove the jQuery dependancy from the code with minimal changes, I rewrote only the functions I needed
+return document.querySelector(selector);
+}
+
+HTMLElement.prototype.text = function(text) {
+  this.innerHTML = text;
+};
+
+HTMLElement.prototype.append = function(text) {
+  this.innerHTML = this.innerHTML + text;
+};
+
+HTMLElement.prototype.html = function(html) {
+  this.innerHTML = html;
+};
+
+HTMLElement.prototype.removeClass = function(remove) {
+    var newClassName = "";
+    var i;
+    var classes = this.className.split(" ");
+    for(i = 0; i < classes.length; i++) {
+        if(classes[i] !== remove) {
+            newClassName += classes[i] + " ";
+        }
+    }
+    this.className = newClassName;
+}
+
+//ELEMENT.classList.remove("CLASS_NAME");
+
 document.onkeydown = function(e) { //key press event listener for terminal typing
     e = e || window.event;
     console.log(event.keyCode + " pressed!")
@@ -209,7 +240,7 @@ printOnTerminal("<br />"+ table.toString())
     commandContext = "";
   }
   currentCommandTyped = ""
-  $(".new-output").get(0).scrollIntoView();
+  $(".new-output").scrollIntoView();
 }
 
 runCommand("clear", false);

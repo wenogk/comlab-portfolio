@@ -30,12 +30,12 @@ function openUrl(url) {
   var win = window.open(url, '_blank');
   win.focus();
 }
-function printOnTerminal(txt="") {
+function printOnTerminal(txt="",noBefore = false) {
   $('.new-output').removeClass('new-output');
   if(txt!="") {
-    $('.terminal').append(`<p class="prompt output">${txt}</p><p class="prompt output new-output"></p>`);
+    $('.terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output">${txt}</p><p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output"></p>`);
   } else{
-    $('.terminal').append(`<p class="prompt output new-output"></p>`);
+    $('.terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output"></p>`);
   }
 }
 
@@ -104,9 +104,19 @@ printOnTerminal("<br />"+ table.toString())
   }
 
 } else if(c=="about") {
-    printOnTerminal(`My name is Romeno Wenogk Fernando. I'm Sri Lankan and currently studying at New York University Abu Dhabi.`);
+    printOnTerminal(`Not implemented yet.`);
   } else if(c=="p1") {
-    printOnTerminal(`A student life tours website with a tour of the convinience store. Type in "open p1" to see the project live or "doc p1" to see the documentation`)
+    printOnTerminal(`
+      <div class="row">
+      <div class="col-auto" style="font-size: 5px">
+        <pre style="color: #1ff042; ">
+          ${NYU_TORCH}
+        </pre>
+      </div>
+      <div class="col promptNoBefore">A student life tours website with a tour of the convinience store. The idea of the website is to keep it as close as possible to the NYU guidelines and invite viewers to sign up for tours on campus. <br /><br />Type in "open p1" to see the project live or "doc p1" to see the documentation</div>
+      </div>
+      `, true)
+    printOnTerminal()
   } else if(c=="p2") {
     printOnTerminal(`A comic that deals with the taboo of menstruation. Type in "open p2" to see the project live or "doc p2" to see the documentation`)
   } else if(c=="p3") {

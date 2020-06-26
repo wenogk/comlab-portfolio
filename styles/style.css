@@ -58,6 +58,19 @@ body {
   content: '> ';
   display: inline-block;
 }
+.terminal .promptNoBefore {
+  color: #1ff042;
+  display: block;
+  font-family: 'Source Code Pro', monospace;
+  font-weight: bold;
+  font-size: 0.9em;
+  letter-spacing: 0.15em;
+  white-space: pre-wrap;
+  text-shadow: 0 0 2px rgba(31, 240, 66, 0.75);
+  line-height: 1.2;
+  margin-bottom: 0.75em;
+}
+
 .terminal .new-output {
   display: inline-block;
 }

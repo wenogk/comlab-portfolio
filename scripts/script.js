@@ -134,11 +134,7 @@ printOnTerminal("<br />"+ table.toString())
   }
 
 } else if(c=="about") {
-    printOnTerminal(`
-      <div class="col-md-3" style="font-size: 5px; min-width: 300px;">
-      <pre style="color: grey; ">${ME}</pre>
-      </div>
-      Not implemented yet.`);
+    printOnTerminal(`Not implemented yet.`);
   } else if(c=="p1") {
     printOnTerminal(`
       <div class="container d-flex h-100">

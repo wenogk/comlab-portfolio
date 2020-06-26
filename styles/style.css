@@ -31,10 +31,9 @@
     opacity: 0;
   }
 }
+
 html, body {
   cursor : none;
-}
-body {
   background-color: black;
 }
 
@@ -42,6 +41,7 @@ body {
   position: relative;
   padding-top: 25px;
 }
+
 .terminal .prompt {
   color: #1ff042;
   display: block;
@@ -54,10 +54,12 @@ body {
   line-height: 1.5;
   margin-bottom: 0.75em;
 }
+
  .terminal .prompt:before {
   content: attr(command-context);
   display: inline-block;
 }
+
 .terminal .promptNoBefore {
   color: #1ff042;
   display: block;

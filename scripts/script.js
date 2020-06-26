@@ -8,7 +8,7 @@ let authorized = false;
 let enterUsernameMode = true;
 let enterPasswordMode = false;
 let enterMessageMode = false;
-function $(selector) { //to remove the jQuery dependancy from the code with minimal changes, I rewrote only the functions I needed
+function $(selector) { //to remove the jQuery dependancy from the code with minimal changes, I rewrote only the functions I needed so I won't be wasting space loading the entire jQuery library
 return document.querySelector(selector);
 }
 
@@ -132,9 +132,9 @@ function openUrl(url) {
 function printOnTerminal(txt="",noBefore = false) {
   $('.new-output').removeClass('new-output');
   if(txt!="") {
-    $('.terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output" command-context="${commandContext}">${txt}</p><p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`);
+    $('#terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output" command-context="${commandContext}">${txt}</p><p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`);
   } else{
-    $('.terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`);
+    $('#terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`);
   }
 }
 
@@ -168,7 +168,7 @@ function runCommand(command , saveToHistory = true) {
   let c = command.replace(/\s+/g,' ').trim(); //remove any extra white space on either end of string
   let args = c.split(' ')
   if(c=="clear") {
-    $('.terminal').html(`
+    $('#terminal').html(`
       <div class="container d-flex h-100">
       <div class="row ">
       <div class="col-md-3 promptNoBefore justify-content-center align-self-center" style="font-size: 4px">
@@ -341,3 +341,4 @@ if(window.localStorage.getItem('user')!== null) { //if user already logged in, s
 }
 
 runCommand("clear", false);
+console.log(INCEPTION)

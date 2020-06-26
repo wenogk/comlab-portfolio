@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
    <head>
-
      <!-- Required meta tags -->
     <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-     <!-- Bootstrap CSS -->
+     <!-- Bootstrap CSS & Source Code Pro Font-->
      <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
-
      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="styles/style.css">
     <title> ssh anonymous@portfolio </title>
@@ -17,14 +14,14 @@
    </head>
   <body>
     <div class="container">
-    <div class="terminal">
-        <p class="prompt">Hello, my name is Romeno! Type in, "help" and hit enter to get the available commands</p>
-        <p class="prompt output new-output"></p>
+      <div class="terminal d-none d-sm-block" id="terminal"></div>
+      <div class="terminal d-sm-none">
+        <div class="promptNoBefore new-output"> > Can't open terminal on mobile. Please open in pc or laptop to view portfolio.</div>
+      </div>
     </div>
-  </div>
+    <!-- Javascript dependancies -->
      <script src="scripts/ascii-table.min.js"></script>
      <script src="scripts/media.js"></script>
-      <script src="scripts/script.js"></script>
-
+     <script src="scripts/script.js"></script>
   </body>
 </html>

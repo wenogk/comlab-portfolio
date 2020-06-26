@@ -68,10 +68,8 @@ function runCommand(command , saveToHistory = true) {
     $('.terminal').html(`
       <div class="container d-flex h-100">
       <div class="row ">
-      <div class="col-auto promptNoBefore justify-content-center align-self-center" style="font-size: 4px">
-        <pre style="color: #1ff042; ">
-          ${ME}
-        </pre>
+      <div class="col-md-3 promptNoBefore justify-content-center align-self-center" style="font-size: 4px">
+        <pre style="color: #1ff042; ">${ME}</pre>
       </div>
       <div class="col promptNoBefore align-middle justify-content-center align-self-center">Hello, my name is Romeno! Type in, "help" and hit enter to get the available commands</div>
       </div>
@@ -137,20 +135,16 @@ printOnTerminal("<br />"+ table.toString())
 
 } else if(c=="about") {
     printOnTerminal(`
-      <div class="col-auto" style="font-size: 5px">
-      <pre style="color: grey; ">
-        ${ME}
-      </pre>
+      <div class="col-md-3" style="font-size: 5px; min-width: 300px;">
+      <pre style="color: grey; ">${ME}</pre>
       </div>
       Not implemented yet.`);
   } else if(c=="p1") {
     printOnTerminal(`
       <div class="container d-flex h-100">
       <div class="row">
-      <div class="col-auto promptNoBefore justify-content-center align-self-center" style="font-size: 5px">
-        <pre style="color: #1ff042; ">
-          ${NYU_TORCH}
-        </pre>
+      <div class="col-md-3 promptNoBefore justify-content-center align-self-center text-center" style="font-size: 5px; min-width: 300px;">
+        <pre style="color: #1ff042; ">${NYU_TORCH}</pre>
       </div>
       <div class="col promptNoBefore align-middle justify-content-center align-self-center">A student life tours website with a tour of the convinience store. The idea of the website is to keep it as close as possible to the NYU guidelines and invite viewers to sign up for tours on campus. <br /><br />Type in "open p1" to see the project live or "doc p1" to see the documentation</div>
       </div>
@@ -161,10 +155,8 @@ printOnTerminal("<br />"+ table.toString())
     printOnTerminal(`
       <div class="container d-flex h-100">
       <div class="row">
-      <div class="col-auto promptNoBefore justify-content-center align-self-center" style="font-size: 5px">
-        <pre style="color: #1ff042; ">
-          ${PERIODS}
-        </pre>
+      <div class="col-md-3 promptNoBefore justify-content-center align-self-center text-center" style="font-size: 5px; min-width: 300px;">
+        <pre style="color: #1ff042; ">${PERIODS}</pre>
       </div>
       <div class="col promptNoBefore align-middle justify-content-center align-self-center">A comic that deals with the taboo of menstruation. <br /><br />Type in "open p2" to see the project live or "doc p2" to see the documentation</div>
       </div>
@@ -175,10 +167,8 @@ printOnTerminal("<br />"+ table.toString())
       printOnTerminal(`
       <div class="container d-flex">
       <div class="row">
-      <div class="col-auto promptNoBefore justify-content-center align-self-center" style="font-size: 5px">
-        <pre style="color: #1ff042; ">
-          ${PLANE}
-        </pre>
+      <div class="col-md-3 promptNoBefore justify-content-center align-self-center text-center" style="font-size: 5px; min-width: 300px;">
+        <pre style="color: #1ff042; ">${PLANE}</pre>
       </div>
       <div class="col promptNoBefore align-middle justify-content-center align-self-center">A turbulent sound journey in a plane. <br/><br/> Type in "open p3" to see the project live or "doc p3" to see the documentation</div>
       </div>
@@ -189,10 +179,8 @@ printOnTerminal("<br />"+ table.toString())
     printOnTerminal(`
       <div class="container d-flex">
       <div class="row">
-      <div class="col-auto promptNoBefore justify-content-center align-self-center" style="font-size: 5px">
-        <pre style="color: #1ff042; ">
-          ${GTA}
-        </pre>
+      <div class="col-md-3 promptNoBefore justify-content-center align-self-center text-center" style="font-size: 5px; min-width: 300px;">
+        <pre style="color: #1ff042; ">${GTA}</pre>
       </div>
       <div class="col promptNoBefore align-middle justify-content-center align-self-center">Grand Theft Auto themed NYUAD experience. <br/><br/> Type in "open p4" to see the project live or "doc p4" to see the documentation</div>
       </div>

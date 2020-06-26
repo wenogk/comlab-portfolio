@@ -59,7 +59,7 @@ function printOnTerminal(txt="",noBefore = false) {
   }
 }
 
-function runCommand(command) {
+function runCommand(command , saveToHistory = true) {
   let commandValid = true;
   let keepCommandContext = false;
   let c = command.replace(/\s+/g,' ').trim(); //remove any extra white space on either end of string
@@ -79,7 +79,7 @@ function runCommand(command) {
       </div>
     <p class="prompt output new-output"></p>`);
   } else if(c=="help") {
-    printOnTerminal("Commands available are: projects, about, message, clear");
+    printOnTerminal("Commands available are: projects, about, message, clear. As you type in commands you can reuse your previous commands by using the up and down arrow.");
   } else if(c=="projects") {
     var table = new AsciiTable('Comlab Projects')
 table
@@ -208,11 +208,12 @@ printOnTerminal("<br />"+ table.toString())
     commandValid = false;
     printOnTerminal(`Oops. That command is not recognized. Type in "help"`)
   }
-  if(commandValid) {
+  if(commandValid && (saveToHistory)) {
     if(commandHistory[commandHistory.length-1]!=c) {
       let len = commandHistory.length;
-      if(len > 4){
-        commandHistory.splice( 0, len - 4);
+      let maxHistoryValues = 4;
+      if(len > maxHistoryValues){
+        commandHistory.splice( 0, len - maxHistoryValues);
       }
       commandHistory.push(c)
     }
@@ -227,4 +228,4 @@ printOnTerminal("<br />"+ table.toString())
   $(".new-output").get(0).scrollIntoView();
 }
 
-runCommand("clear");
+runCommand("clear", false);

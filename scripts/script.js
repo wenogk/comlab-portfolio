@@ -104,7 +104,17 @@ printOnTerminal("<br />"+ table.toString())
   }
 
 } else if(c=="about") {
-    printOnTerminal("My name is Romeno Wenogk Fernando. I'm Sri Lankan and currently studying at New York University Abu Dhabi.");
+    printOnTerminal(`My name is Romeno Wenogk Fernando. I'm Sri Lankan and currently studying at New York University Abu Dhabi.`);
+  } else if(c=="p1") {
+    printOnTerminal(`A student life tours website with a tour of the convinience store. Type in "open p1" to see the project live or "doc p1" to see the documentation`)
+  } else if(c=="p2") {
+    printOnTerminal(`A comic that deals with the taboo of menstruation. Type in "open p2" to see the project live or "doc p2" to see the documentation`)
+  } else if(c=="p3") {
+    printOnTerminal(`A turbulent sound journey in a plane. Type in "open p3" to see the project live or "doc p3" to see the documentation`)
+  } else if(c=="p4") {
+    printOnTerminal(`Grand Theft Auto themed NYUAD experience. Type in "open p4" to see the project live or "doc p4" to see the documentation`)
+  } else if(c=="message") {
+    printOnTerminal("Not implemented yet.");
   } else if(c=="") {
     printOnTerminal();
   } else {

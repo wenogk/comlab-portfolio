@@ -35,6 +35,9 @@ HTMLElement.prototype.removeClass = function(remove) {
 
 document.onkeydown = function(e) { //key press event listener for terminal typing
     e = e || window.event;
+    if (e.ctrlKey || e.metaKey) {
+      return;
+    }
     console.log(event.keyCode + " pressed!")
     var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
     let letter = String.fromCharCode(charCode).toLowerCase(); //char number to actual letter which is then forced to lowercase so even upper case cheat codes r good

@@ -1,5 +1,7 @@
 let currentCommandTyped = "";
 let commandContext = "";
+let commandHistory = [];
+let commandHistoryMarker = 0;
 document.onkeydown = function(e) { //key press event listener for terminal typing
     e = e || window.event;
     console.log(event.keyCode + " pressed!")
@@ -23,13 +25,30 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
       $(".new-output").text(currentCommandTyped)
     } else if(event.keyCode === 13) { // enter key hit
       runCommand(currentCommandTyped);
-    }
+    } else if (event.keyCode === 38) { //up arrow key for back
+      e.preventDefault();
+      if(commandHistoryMarker>0){
+        commandHistoryMarker-=1;
+        currentCommandTyped = commandHistory[commandHistoryMarker]
+        $(".new-output").text(currentCommandTyped);
+      }
+    } else if (event.keyCode === 40) { // down arrow key for front
+      e.preventDefault();
+      if(commandHistoryMarker<commandHistory.length-1){
+        commandHistoryMarker+=1;
+        currentCommandTyped = commandHistory[commandHistoryMarker]
+        $(".new-output").text(currentCommandTyped);
+      }
+    } //38 40 down)
 };
 
 function openUrl(url) {
-  // var win = window.open(url, '_blank');
-  // win.focus();
-  document.location.href = url;
+  var win = window.open(url, '_blank');
+  if(!win || win.closed || typeof win.closed=='undefined') { //if popups are blocked in user system change current url
+    document.location.href = url;
+  } else {
+    win.focus();
+  }
 }
 function printOnTerminal(txt="",noBefore = false) {
   $('.new-output').removeClass('new-output');
@@ -41,7 +60,7 @@ function printOnTerminal(txt="",noBefore = false) {
 }
 
 function runCommand(command) {
-
+  let commandValid = true;
   let keepCommandContext = false;
   let c = command.replace(/\s+/g,' ').trim(); //remove any extra white space on either end of string
   let args = c.split(' ')
@@ -139,12 +158,36 @@ printOnTerminal("<br />"+ table.toString())
       `, true)
     printOnTerminal()
   } else if(c=="p2") {
-    printOnTerminal(`A comic that deals with the taboo of menstruation. Type in "open p2" to see the project live or "doc p2" to see the documentation`)
-  } else if(c=="p3") {
-    printOnTerminal(`A turbulent sound journey in a plane. Type in "open p3" to see the project live or "doc p3" to see the documentation`)
-  } else if(c=="p4") {
     printOnTerminal(`
       <div class="container d-flex h-100">
+      <div class="row">
+      <div class="col-auto promptNoBefore justify-content-center align-self-center" style="font-size: 5px">
+        <pre style="color: #1ff042; ">
+          ${PERIODS}
+        </pre>
+      </div>
+      <div class="col promptNoBefore align-middle justify-content-center align-self-center">A comic that deals with the taboo of menstruation. <br /><br />Type in "open p2" to see the project live or "doc p2" to see the documentation</div>
+      </div>
+      </div>
+      `, true)
+    printOnTerminal()
+  } else if(c=="p3") {
+      printOnTerminal(`
+      <div class="container d-flex">
+      <div class="row">
+      <div class="col-auto promptNoBefore justify-content-center align-self-center" style="font-size: 5px">
+        <pre style="color: #1ff042; ">
+          ${PLANE}
+        </pre>
+      </div>
+      <div class="col promptNoBefore align-middle justify-content-center align-self-center">A turbulent sound journey in a plane. <br/><br/> Type in "open p3" to see the project live or "doc p3" to see the documentation</div>
+      </div>
+      </div>
+      `, true)
+    printOnTerminal()
+  } else if(c=="p4") {
+    printOnTerminal(`
+      <div class="container d-flex">
       <div class="row">
       <div class="col-auto promptNoBefore justify-content-center align-self-center" style="font-size: 5px">
         <pre style="color: #1ff042; ">
@@ -159,10 +202,22 @@ printOnTerminal("<br />"+ table.toString())
   } else if(c=="message") {
     printOnTerminal("Not implemented yet.");
   } else if(c=="") {
+    commandValid = false;
     printOnTerminal();
   } else {
+    commandValid = false;
     printOnTerminal(`Oops. That command is not recognized. Type in "help"`)
   }
+  if(commandValid) {
+    if(commandHistory[commandHistory.length-1]!=c) {
+      let len = commandHistory.length;
+      if(len > 4){
+        commandHistory.splice( 0, len - 4);
+      }
+      commandHistory.push(c)
+    }
+  }
+  commandHistoryMarker = commandHistory.length;
   if(keepCommandContext) {
     commandContext = command;
   } else {

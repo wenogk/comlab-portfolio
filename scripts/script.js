@@ -85,6 +85,9 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
         commandHistoryMarker+=1;
         currentCommandTyped = commandHistory[commandHistoryMarker]
         $(".new-output").text(currentCommandTyped);
+      } else if(commandHistoryMarker == commandHistory.length-1 && currentCommandTyped==commandHistory[commandHistory.length-1]) {
+        currentCommandTyped = "";
+        $(".new-output").text(currentCommandTyped);
       }
     } //38 40 down)
 };
@@ -277,10 +280,10 @@ printOnTerminal("<br />"+ table.toString())
   }
   commandHistoryMarker = commandHistory.length;
   currentCommandTyped = ""
-  $(".new-output").scrollIntoView();
+  $(".new-output").scrollIntoView(); //make screen scroll down as new outputs come on the terminal
 }
 
-if(window.localStorage.getItem('user')!== null) {
+if(window.localStorage.getItem('user')!== null) { //if user already logged in, set the variables accordingly
   enterUsernameMode = false;
   enterPasswordMode = false;
   authorized = true;
@@ -289,6 +292,6 @@ if(window.localStorage.getItem('user')!== null) {
   password = data.password;
   commandContext = username + "@portfolio > ";
   currentCommandTyped = "";
-  runCommand("clear");
 }
+
 runCommand("clear", false);

@@ -115,7 +115,7 @@ function authorization(value) {
     username = value;
     enterUsernameMode = false;
     enterPasswordMode = true;
-    commandContext = "Set password: ";
+    commandContext = "Set Password > ";
     currentCommandTyped = "";
     printOnTerminal();
   } else if(enterPasswordMode) {
@@ -189,19 +189,19 @@ printOnTerminal("<br />"+ table.toString())
 } else if((c.startsWith("doc ") || c.startsWith("docs ")) && args.length>1) {
   switch(args[1]) {
     case "p1":
-      openUrl("https://github.com/wenogk/comlab-assignment-1/")
+      openUrl("https://github.com/wenogk/comlab-assignment-1/blob/master/README.md")
       printOnTerminal()
       break;
     case "p2":
-      openUrl("https://github.com/wenogk/comic-strip/")
+      openUrl("https://github.com/wenogk/comic-strip/blob/master/README.md")
       printOnTerminal()
       break;
     case "p3":
-      openUrl("https://github.com/wenogk/sound-journey")
+      openUrl("https://github.com/wenogk/sound-journey/blob/master/README.md")
       printOnTerminal()
       break;
     case "p4":
-      openUrl("https://github.com/wenogk/gta-nyuad")
+      openUrl("https://github.com/wenogk/gta-nyuad/blob/master/README.md")
       printOnTerminal()
       break;
     default:

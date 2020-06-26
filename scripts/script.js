@@ -127,6 +127,7 @@ function authorization(value) {
     enterPasswordMode = false;
     authorized = true;
     commandContext = username + "@portfolio > ";
+    $("title").html("ssh " + username + "@portfolio")
     currentCommandTyped = "";
     runCommand("clear");
   }
@@ -292,6 +293,7 @@ if(window.localStorage.getItem('user')!== null) { //if user already logged in, s
   password = data.password;
   commandContext = username + "@portfolio > ";
   currentCommandTyped = "";
+  $("title").html("ssh " + username + "@portfolio")
 }
 
 runCommand("clear", false);

@@ -41,12 +41,11 @@ function toHidden(password) {
 document.onkeydown = function(e) { //key press event listener for terminal typing
     e = e || window.event;
     if (e.ctrlKey || e.metaKey) { return;} //to ignore when cmd+r / ctrl+r is pressed
-    console.log(event.keyCode + " pressed!")
     let isNotMaxCharacters = ((!authorized && currentCommandTyped.length<12) || authorized);
     var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
     let letter = String.fromCharCode(charCode).toLowerCase(); //char number to actual letter which is then forced to lowercase so even upper case cheat codes r good
     if (event.keyCode >= 48 && event.keyCode <= 57) { //if number 0-9
-      if(isNotMaxCharacters) currentCommandTyped+= String(event.keyCode-48);
+      if(isNotMaxCharacters && !enterUsernameMode) currentCommandTyped+= String(event.keyCode-48);
       if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
       else $(".new-output").text(toHidden(currentCommandTyped))
     } else if (event.keyCode >= 65 && event.keyCode <= 90) { //if letter a-z
@@ -54,11 +53,10 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
       if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
       else $(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 189) { // dash key "-"
-      if(isNotMaxCharacters)currentCommandTyped+="-";
+      if(isNotMaxCharacters && !enterUsernameMode)currentCommandTyped+="-";
       if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
       else $(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 32) { // space bar hit
-      console.log("space")
       if(!enterUsernameMode && isNotMaxCharacters) currentCommandTyped+=" ";
       if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
       else $(".new-output").text(toHidden(currentCommandTyped))
@@ -67,7 +65,6 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
       if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
       else $(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 13) { // enter key hit
-      console.log(`authorized: ${authorized}, usernameMode: ${enterUsernameMode}, passwordMode: ${enterPasswordMode}`)
       if(!authorized) {
         authorization(currentCommandTyped);
       } else {
@@ -190,8 +187,8 @@ table
   .addRow('Flight: A turbulent experience', "p3")
   .addRow('GTA NYU Abu Dhabi', "p4")
 
-printOnTerminal("<br />"+ table.toString())
-
+printOnTerminal(table.toString(),true)
+printOnTerminal();
 } else if(c.startsWith("open ") && args.length>1) {
   switch(args[1]) {
     case "p1":

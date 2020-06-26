@@ -42,24 +42,24 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
     e = e || window.event;
     if (e.ctrlKey || e.metaKey) { return;} //to ignore when cmd+r / ctrl+r is pressed
     console.log(event.keyCode + " pressed!")
-    let isMaxCharacters = ((!authorized && currentCommandTyped.length<12) || authorized);
+    let isNotMaxCharacters = ((!authorized && currentCommandTyped.length<12) || authorized);
     var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
     let letter = String.fromCharCode(charCode).toLowerCase(); //char number to actual letter which is then forced to lowercase so even upper case cheat codes r good
     if (event.keyCode >= 48 && event.keyCode <= 57) { //if number 0-9
-      if(isMaxCharacters) currentCommandTyped+= String(event.keyCode-48);
+      if(isNotMaxCharacters) currentCommandTyped+= String(event.keyCode-48);
       if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
       else $(".new-output").text(toHidden(currentCommandTyped))
     } else if (event.keyCode >= 65 && event.keyCode <= 90) { //if letter a-z
-      if(isMaxCharacters) currentCommandTyped+=letter;
+      if(isNotMaxCharacters) currentCommandTyped+=letter;
       if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
       else $(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 189) { // dash key "-"
-      if(isMaxCharacters)currentCommandTyped+="-";
+      if(isNotMaxCharacters)currentCommandTyped+="-";
       if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
       else $(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 32) { // space bar hit
       console.log("space")
-      if(!enterUsernameMode && isMaxCharacter) currentCommandTyped+=" ";
+      if(!enterUsernameMode && isNotMaxCharacters) currentCommandTyped+=" ";
       if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
       else $(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 8) { // back space hit

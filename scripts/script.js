@@ -92,7 +92,21 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
       }
     } //38 40 down)
 };
-
+function sendMessage(message) {
+  let xmlHttp = new XMLHttpRequest();
+  let formData = new FormData();
+  formData.append("_subject","Comlab portfolio msg");
+  formData.append("message", username + " : " + message);
+        xmlHttp.onreadystatechange = function()
+        {
+            if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            {
+                alert(xmlHttp.responseText);
+            }
+        }
+        xmlHttp.open("post", "https://formsubmit.co/ajax/drf325@nyu.edu");
+        xmlHttp.send(formData);
+}
 function openUrl(url) {
   var win = window.open(url, '_blank');
   if(!win || win.closed || typeof win.closed=='undefined') { //if popups are blocked in user system change current url
@@ -258,8 +272,9 @@ printOnTerminal("<br />"+ table.toString())
       </div>
       `, true)
     printOnTerminal()
-  } else if(c=="message") {
-    printOnTerminal("Not implemented yet.");
+  } else if(c.startsWith("message") && args.length > 1) {
+    sendMessage(currentCommandTyped);
+    printOnTerminal("Emailed romeno your message.");
   } else if(c=="logout") {
     window.localStorage.clear();
     location.reload();

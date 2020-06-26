@@ -171,7 +171,7 @@ function runCommand(command , saveToHistory = true) {
     $('#terminal').html(`
       <div class="container d-flex h-100">
       <div class="row ">
-      <div class="col-md-3 promptNoBefore justify-content-center align-self-center" style="font-size: 4px">
+      <div class="col-md-3 promptNoBefore justify-content-center align-self-center text-center" style="font-size: 4px; min-width: 300px;">
         <pre style="color: #1ff042; ">${ME}</pre>
       </div>
       <div class="col promptNoBefore align-middle justify-content-center align-self-center">Hello ${(username!="") ? username : "there"}, my name is Romeno. Welcome to my Communications Lab Class Portfolio! Type in, "help" and hit enter to get some of the available commands.</div>

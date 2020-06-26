@@ -35,7 +35,9 @@ HTMLElement.prototype.removeClass = function(remove) {
     }
     this.className = newClassName;
 }
-
+function toHidden(password) {
+  return "*".repeat(password.length);
+}
 document.onkeydown = function(e) { //key press event listener for terminal typing
     e = e || window.event;
     if (e.ctrlKey || e.metaKey) { return;} //to ignore when cmd+r / ctrl+r is pressed
@@ -44,20 +46,25 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
     let letter = String.fromCharCode(charCode).toLowerCase(); //char number to actual letter which is then forced to lowercase so even upper case cheat codes r good
     if (event.keyCode >= 48 && event.keyCode <= 57) { //if number 0-9
       currentCommandTyped+= String(event.keyCode-48);
-      $(".new-output").text(currentCommandTyped)
+      if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
+      else $(".new-output").text(toHidden(currentCommandTyped))
     } else if (event.keyCode >= 65 && event.keyCode <= 90) { //if letter a-z
       currentCommandTyped+=letter;
-      $(".new-output").text(currentCommandTyped)
+      if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
+      else $(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 189) { // dash key "-"
      currentCommandTyped+="-";
-     $(".new-output").text(currentCommandTyped)
+    if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
+    else $(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 32) { // space bar hit
       console.log("space")
-      currentCommandTyped+=" ";
-      $(".new-output").text(currentCommandTyped)
+      if(!enterUsernameMode) currentCommandTyped+=" ";
+      if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
+      else $(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 8) { // back space hit
       currentCommandTyped = currentCommandTyped.slice(0,-1); //remove last character
-      $(".new-output").text(currentCommandTyped)
+      if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
+      else $(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 13) { // enter key hit
       console.log(`authorized: ${authorized}, usernameMode: ${enterUsernameMode}, passwordMode: ${enterPasswordMode}`)
       if(!authorized) {
@@ -109,6 +116,11 @@ function authorization(value) {
     printOnTerminal();
   } else if(enterPasswordMode) {
     password = value;
+    const user = {
+    username: username,
+    password: password,
+    }
+    window.localStorage.setItem('user', JSON.stringify(user));
     enterPasswordMode = false;
     authorized = true;
     commandContext = username + "@portfolio > ";
@@ -135,7 +147,7 @@ function runCommand(command , saveToHistory = true) {
       </div>
     <p class="prompt output new-output" command-context="${commandContext}"></p>`);
   } else if(c=="help") {
-    printOnTerminal("Commands available are: projects, about, message, clear. As you type in commands you can reuse your previous commands by using the up and down arrow.");
+    printOnTerminal("Commands available are: projects, about, message, clear, logout. As you type in commands you can reuse your previous commands by using the up and down arrow.");
   } else if(c=="projects") {
     var table = new AsciiTable('Comlab Projects')
 table
@@ -243,6 +255,9 @@ printOnTerminal("<br />"+ table.toString())
     printOnTerminal()
   } else if(c=="message") {
     printOnTerminal("Not implemented yet.");
+  } else if(c=="logout") {
+    window.localStorage.clear();
+    location.reload();
   } else if(c=="") {
     commandValid = false;
     printOnTerminal();
@@ -265,4 +280,15 @@ printOnTerminal("<br />"+ table.toString())
   $(".new-output").scrollIntoView();
 }
 
+if(window.localStorage.getItem('user')!== null) {
+  enterUsernameMode = false;
+  enterPasswordMode = false;
+  authorized = true;
+  let data = JSON.parse(window.localStorage.getItem('user'));
+  username = data.username;
+  password = data.password;
+  commandContext = username + "@portfolio > ";
+  currentCommandTyped = "";
+  runCommand("clear");
+}
 runCommand("clear", false);

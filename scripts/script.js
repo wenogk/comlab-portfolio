@@ -210,8 +210,20 @@ printOnTerminal("<br />"+ table.toString())
       openUrl("https://wenogk.github.io/gta-nyuad")
       printOnTerminal()
       break;
+    case "insta":
+      openUrl("https://instagram.com/wenogk")
+      printOnTerminal()
+      break;
+    case "github":
+      openUrl("https://github.com/wenogk")
+      printOnTerminal()
+      break;
+    case "fb":
+      openUrl("https://facebook.com/iwenogk")
+      printOnTerminal()
+      break;
     default:
-      printOnTerminal("Incorrect assignment name. Options are p1, p2, p3 or p4.")
+      printOnTerminal("Option doesn't exist. Options are p1, p2, p3, p4, insta, github, fb")
   }
 
 } else if((c.startsWith("doc ") || c.startsWith("docs ")) && args.length>1) {
@@ -237,7 +249,8 @@ printOnTerminal("<br />"+ table.toString())
   }
 
 } else if(c=="about") {
-    printOnTerminal(`I'm Sri Lankan and currently studying Computer Science at New York University Abu Dhabi. I'm really like backend development and am currently learning iOS app development in Swift. In my free time I like to play pool, table tennis and watch tv shows with my friends.`);
+    printOnTerminal(`I'm Sri Lankan and currently studying Computer Science at New York University Abu Dhabi. I really like backend development and am currently learning iOS app development in Swift. In my free time I like to play pool, table tennis and watch tv shows with my friends. <br /><br />To check out my socials, type in "open github", "open insta" or "open fb"`, true);
+    printOnTerminal();
   } else if(c=="p1") {
     printOnTerminal(`
       <div class="container d-flex h-100">

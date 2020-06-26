@@ -171,7 +171,7 @@ function runCommand(command , saveToHistory = true) {
       <div class="col-md-3 promptNoBefore justify-content-center align-self-center text-center" style="font-size: 4px; min-width: 300px;">
         <pre style="color: #1ff042; ">${ME}</pre>
       </div>
-      <div class="col promptNoBefore align-middle justify-content-center align-self-center">Hello ${(username!="") ? username : "there"}, my name is Romeno. Welcome to my Communications Lab Class Portfolio! Type in, "help" and hit enter to get some of the available commands.</div>
+      <div class="col promptNoBefore align-middle justify-content-center align-self-center">Hello ${(username!="") ? username : "there"}, my name is Romeno. Welcome to my Communications Lab Class Portfolio! <br/><br/>${authorized ? "Type in, \"help\" and hit enter to get some of the available commands." : "Please ssh into the terminal by entering a username and password of your choice."} </div>
       </div>
       </div>
       </div>

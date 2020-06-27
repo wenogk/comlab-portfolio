@@ -1,22 +1,24 @@
-let currentCommandTyped = "";
-let commandContext = "Enter Username > ";
-let commandHistory = [];
-let commandHistoryMarker = 0;
-let username = "";
-let password = "";
-let authorized = false;
-let enterUsernameMode = true;
-let enterPasswordMode = false;
-let enterMessageMode = false;
-let arrowKeyHelpMessageCounter = 0;
-class FileTreeNode {
-  constructor(value, commands) {
-    this.name = value;
-    this.subfiles = [];
-    this.availableCommands = [...commands,"out","list","clear","logout","help",""];
+let currentCommandTyped = ""; //the current command typed by the user as a combination of their keystrokes
+let commandContext = "Enter Username > "; // this variable is used for the part before every terminal prompt including the username@filepath >
+let commandHistory = []; //array that holds the user's command history
+let commandHistoryMarker = 0; //an index marker for the commandHistory based on the user using their up/down arrow key
+let username = ""; //username of current user
+let password = ""; //password of current user
+let authorized = false; //bool to prevent command execution without authorization
+let enterUsernameMode = true; //bool to start username entering process
+let enterPasswordMode = false; //bool to start pass entering process
+let enterMessageMode = false; //bool to start message entering process
+let arrowKeyHelpMessageCounter = 0; //counter to display the arrow help message only once so it's not annoying
+
+
+class FileTreeNode { //Class for each individual, "File" object
+  constructor(value, commands) { //constructor taking the file name and accepted commands
+    this.name = value; //setting name of file
+    this.subfiles = []; //these will be initialized later
+    this.availableCommands = [...commands,"out","list","clear","logout","help",""]; //spread operator to add the default commands as well that are there for all files.
   }
-  listAvailableCommands() {
-    let pretty = []
+  listAvailableCommands() { //function that lists the possible commands for the specific directory
+    let pretty = [] //in the following for loop and if statements we clean the list so that some redundant commands such as 'help' or 'out' when ur in a top level directory can be ignored in the display.
     for (let x in this.availableCommands) {
       if(this.availableCommands[x] != "" && this.availableCommands[x] != "help") {
         if(!(this.name == "portfolio" && this.availableCommands[x] == "out")) {
@@ -26,22 +28,22 @@ class FileTreeNode {
         }
       }
     }
-    return pretty.join(', ');
+    return pretty.join(', '); //returns a string of the array items separated by a comma
   }
 
-  listSubfiles() {
+  listSubfiles() { //simple function that lists out the subfiles (sub directories) of a specific file object
     let f = [];
     for (let x in this.subfiles) {
       f.push(this.subfiles[x].name)
     }
-    return f.join(', ');
+    return f.join(', '); //returns a string of the array items separated by a comma
   }
 
-  isValidFileTreeCommand(command) {
+  isValidFileTreeCommand(command) {  //checks if a command string is present in the available commands for a specific file directory and returns a bool
     return this.availableCommands.includes(command);
   }
 
-  returnSubfile(fileName) {
+  returnSubfile(fileName) { //return a sub file object based on a file name
     for (let x in this.subfiles) {
       if(this.subfiles[x].name === fileName) {
         return this.subfiles[x];
@@ -50,7 +52,7 @@ class FileTreeNode {
     return this;
   }
 
-  doesSubfileExist(fileName) {
+  doesSubfileExist(fileName) { //return bool based on whether file with filename exists in subfile array
     for (let x in this.subfiles) {
       if(this.subfiles[x].name === fileName) {
         return true;
@@ -60,10 +62,9 @@ class FileTreeNode {
   }
 
 }
-//portfolio, "p1"
-//projects, "p1"
+
 function getParentFileTreeNode(file) { //recursive function to get parent file from sub file
-  function recursiveSearch(fileObject, name) {
+  function recursiveSearch(fileObject, name) { //closure function for recursion
     if(fileObject.doesSubfileExist(name)) {
       return fileObject;
     } else {
@@ -76,14 +77,14 @@ function getParentFileTreeNode(file) { //recursive function to get parent file f
   if(file.name=="portfolio") { //if current file is the root then return the root as no parent
     return file;
   } else {
-    return recursiveSearch(portfolio, file.name)
+    return recursiveSearch(portfolio, file.name) //call recursive function
   }
 }
 
-function getFilePathFromFileTreeNode(file) { //recursive function to get parent file from sub file
+function getFilePathFromFileTreeNode(file) { //recursive function to get full file path from file object
   let filePathVal;
-  function recursiveSearch(fileObject, name, filePath) {
-    if(fileObject.name==name) {
+  function recursiveSearch(fileObject, name, filePath) { //recursive function
+    if(fileObject.name==name) { //if the desired file object has been reached in the tree, set the filePathVal to the path, which is the exact path we require
       filePathVal = [...filePath, name];
     } else {
       for (let x in fileObject.subfiles) {
@@ -95,11 +96,11 @@ function getFilePathFromFileTreeNode(file) { //recursive function to get parent 
   if(file.name=="portfolio") { //if current file is the root then return the root as no parent
     return [file.name];
   } else {
-    recursiveSearch(portfolio, file.name, []);
+    recursiveSearch(portfolio, file.name, []); //call recursive function
     return filePathVal;
   }
 }
-//add ls. cd/open commands
+//The following is the initialization of the file tree nodes based on the hierachy and available commands for each directory
 const portfolio = new FileTreeNode('portfolio',['projects','message','about']);
   const about = new FileTreeNode('about',['open insta','open fb','open github']);
   const projects = new FileTreeNode('projects',['p1','p2','p3','p4']);
@@ -110,25 +111,25 @@ const portfolio = new FileTreeNode('portfolio',['projects','message','about']);
     projects.subfiles.push(p1, p2, p3, p4);
   portfolio.subfiles.push(projects, about);
 
-let currentFilePath = portfolio;
+let currentFilePath = portfolio; //the initial file path is obviously the portfolio.
 
 function w(selector) { //to remove the jQuery dependancy from the code with minimal changes, I rewrote only the functions I needed so I won't be wasting space loading the entire jQuery library
 return document.querySelector(selector);
 }
 
-HTMLElement.prototype.text = function(text) {
+HTMLElement.prototype.text = function(text) { //similar to jquery's $(element).text() function
   this.innerHTML = text;
 };
 
-HTMLElement.prototype.append = function(text) {
+HTMLElement.prototype.append = function(text) { //similar to jquery's $(element).append() function
   this.innerHTML = this.innerHTML + text;
 };
 
-HTMLElement.prototype.html = function(html) {
+HTMLElement.prototype.html = function(html) { //similar to jquery's $(element).html() function
   this.innerHTML = html;
 };
 
-HTMLElement.prototype.removeClass = function(remove) {
+HTMLElement.prototype.removeClass = function(remove) { //similar to jquery's $(element).removeClass() function
     var newClassName = "";
     var i;
     var classes = this.className.split(" ");
@@ -139,7 +140,7 @@ HTMLElement.prototype.removeClass = function(remove) {
     }
     this.className = newClassName;
 }
-function toHidden(password) {
+function toHidden(password) { //simple function that returns a string of asterisks with the same length as the input string, this is used for the password entry.
   return "*".repeat(password.length);
 }
 document.onkeydown = function(e) { //key press event listener for terminal typing

@@ -8,6 +8,100 @@ let authorized = false;
 let enterUsernameMode = true;
 let enterPasswordMode = false;
 let enterMessageMode = false;
+
+class FileTreeNode {
+  constructor(value, commands) {
+    this.name = value;
+    this.subfiles = [];
+    this.availableCommands = [...commands, "clear","logout","help","","out","list"];
+  }
+  listAvailableCommands() {
+    return this.availableCommands.join(', ');
+  }
+
+  listSubfiles() {
+    let f = [];
+    for (let x in this.subfiles) {
+      f.push(this.subfiles[x].name)
+    }
+    return f.join(', ');
+  }
+
+  isValidFileTreeCommand(command) {
+    return this.availableCommands.includes(command);
+  }
+
+  returnSubfile(fileName) {
+    for (let x in this.subfiles) {
+      if(this.subfiles[x].name === fileName) {
+        return this.subfiles[x];
+      }
+    }
+    return this;
+  }
+
+  doesSubfileExist(fileName) {
+    for (let x in this.subfiles) {
+      if(this.subfiles[x].name === fileName) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+}
+//portfolio, "p1"
+//projects, "p1"
+function getParentFileTreeNode(file) { //recursive function to get parent file from sub file
+  function recursiveSearch(fileObject, name) {
+    if(fileObject.doesSubfileExist(name)) {
+      return fileObject;
+    } else {
+      for (let x in fileObject.subfiles) {
+          return recursiveSearch(fileObject.subfiles[x], name);
+      }
+    }
+  }
+
+  if(file.name=="portfolio") { //if current file is the root then return the root as no parent
+    return file;
+  } else {
+    return recursiveSearch(portfolio, file.name)
+  }
+}
+
+function getFilePathFromFileTreeNode(file) { //recursive function to get parent file from sub file
+  let filePathVal;
+  function recursiveSearch(fileObject, name, filePath) {
+    if(fileObject.name==name) {
+      filePathVal = [...filePath, name];
+    } else {
+      for (let x in fileObject.subfiles) {
+          recursiveSearch(fileObject.subfiles[x], name, [...filePath, fileObject.name]);
+      }
+    }
+  }
+
+  if(file.name=="portfolio") { //if current file is the root then return the root as no parent
+    return [file.name];
+  } else {
+    recursiveSearch(portfolio, file.name, []);
+    return filePathVal;
+  }
+}
+//add ls. cd/open commands
+const portfolio = new FileTreeNode('portfolio',['projects','message','about']);
+  const about = new FileTreeNode('about',['open insta','open fb','open github']);
+  const projects = new FileTreeNode('projects',['p1','p2','p3','p4']);
+    const p1 = new FileTreeNode('p1', ['open p1','doc p1','docs p1']);
+    const p2 = new FileTreeNode('p2', ['open p2','doc p2','docs p2']);
+    const p3 = new FileTreeNode('p3' ,['open p3','doc p3','docs p3']);
+    const p4 = new FileTreeNode('p4' ,['open p4','doc p4','docs p4']);
+    projects.subfiles.push(p1, p2, p3, p4);
+  portfolio.subfiles.push(projects, about);
+
+let currentFilePath = portfolio;
+
 function w(selector) { //to remove the jQuery dependancy from the code with minimal changes, I rewrote only the functions I needed so I won't be wasting space loading the entire jQuery library
 return document.querySelector(selector);
 }
@@ -74,7 +168,7 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
           commandContext = username + "@portfolio > ";
           currentCommandTyped = "";
         } else {
-          runCommand(currentCommandTyped);
+          checkFilePathAndRunCommand(currentCommandTyped);
         }
       }
     } else if (event.keyCode === 38) { //up arrow key for back
@@ -159,6 +253,21 @@ function authorization(value) {
   }
 }
 
+function setCommandContext() {
+  let filePath = getFilePathFromFileTreeNode(currentFilePath).join("/")
+  commandContext = `${username}@${filePath} > `;
+}
+
+function checkFilePathAndRunCommand(command) {
+  if(currentFilePath.isValidFileTreeCommand(command)) {
+    currentFilePath = currentFilePath.returnSubfile(command);
+    setCommandContext();
+    runCommand(command);
+  } else {
+    runCommand("9999999");
+  }
+}
+
 function runCommand(command , saveToHistory = true) {
   let commandValid = true;
   let keepCommandContext = false;
@@ -177,7 +286,7 @@ function runCommand(command , saveToHistory = true) {
       </div>
     <p class="prompt output new-output" command-context="${commandContext}"></p>`);
   } else if(c=="help") {
-    printOnTerminal("Commands available are: projects, about, message, clear, logout. As you type in commands you can reuse your previous commands by using the up and down arrow.");
+    printOnTerminal(`Commands available are: ${currentFilePath.listAvailableCommands()}. As you type in commands you can reuse your previous commands by using the up and down arrow.`);
   } else if(c=="projects") {
     var table = new AsciiTable('Comlab Projects')
 table
@@ -302,7 +411,13 @@ printOnTerminal();
     enterMessageMode = true;
   } else if(c=="logout") {
     window.localStorage.clear();
-    location.reload();
+    location.reload(); //getParentFileTreeNode
+  } else if(c=="out") { //listSubfiles
+    currentFilePath = getParentFileTreeNode(currentFilePath);
+    setCommandContext();
+    printOnTerminal();
+  } else if(c=="list") {
+    printOnTerminal(currentFilePath.listSubfiles());
   } else if(c=="") {
     commandValid = false;
     printOnTerminal();

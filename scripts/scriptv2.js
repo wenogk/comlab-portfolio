@@ -20,7 +20,9 @@ class FileTreeNode {
     for (let x in this.availableCommands) {
       if(this.availableCommands[x] != "" && this.availableCommands[x] != "help") {
         if(!(this.name == "portfolio" && this.availableCommands[x] == "out")) {
-          pretty.push(this.availableCommands[x])
+          if(!((this.subfiles.length==0)&&(this.availableCommands[x] == "list"))) {
+            pretty.push(this.availableCommands[x])
+          }
         }
       }
     }

@@ -8,7 +8,7 @@ let authorized = false;
 let enterUsernameMode = true;
 let enterPasswordMode = false;
 let enterMessageMode = false;
-
+let arrowKeyHelpMessageCounter = 0;
 class FileTreeNode {
   constructor(value, commands) {
     this.name = value;
@@ -19,7 +19,9 @@ class FileTreeNode {
     let pretty = []
     for (let x in this.availableCommands) {
       if(this.availableCommands[x] != "" && this.availableCommands[x] != "help") {
-        pretty.push(this.availableCommands[x])
+        if(!(this.name == "portfolio" && this.availableCommands[x] == "out")) {
+          pretty.push(this.availableCommands[x])
+        }
       }
     }
     return pretty.join(', ');
@@ -233,6 +235,7 @@ function printOnTerminal(txt="",noBefore = false) {
   } else{
     w('#terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`);
   }
+  w(".new-output").scrollIntoView(); //make screen scroll down as new outputs come on the terminal
 }
 
 function authorization(value) {
@@ -252,8 +255,7 @@ function authorization(value) {
     window.localStorage.setItem('user', JSON.stringify(user));
     enterPasswordMode = false;
     authorized = true;
-    commandContext = username + "@portfolio > ";
-    w("title").html("ssh " + username + "@portfolio")
+    setCommandContext()
     currentCommandTyped = "";
     runCommand("clear");
   }
@@ -262,6 +264,7 @@ function authorization(value) {
 function setCommandContext() {
   let filePath = getFilePathFromFileTreeNode(currentFilePath).join("/")
   commandContext = `${username}@${filePath} > `;
+  w('title').html(`ssh ${commandContext.slice(0, -2)}`);
 }
 
 function checkFilePathAndRunCommand(command) {
@@ -286,13 +289,16 @@ function runCommand(command , saveToHistory = true) {
       <div class="col-md-3 promptNoBefore justify-content-center align-self-center text-center" style="font-size: 4px; min-width: 300px;">
         <pre style="color: #1ff042; ">${ME}</pre>
       </div>
-      <div class="col promptNoBefore align-middle justify-content-center align-self-center">Hello ${(username!="") ? username : "there"}, my name is Romeno. Welcome to my Communications Lab Class Portfolio! <br/><br/>${authorized ? "Type in, \"help\" and hit enter to get some of the available commands." : "Please ssh into the terminal by entering a username and password of your choice."} </div>
+      <div class="col promptNoBefore align-middle justify-content-center align-self-center">Hello ${(username!="") ? username : "there"}, my name is Romeno. Welcome to my Communications Lab Class Portfolio! <br/><br/>${authorized ? "Type in, \"help\" and hit enter to get the available commands for each directory." : "Please ssh into the terminal by entering a username and password of your choice."} </div>
       </div>
       </div>
       </div>
     <p class="prompt output new-output" command-context="${commandContext}"></p>`);
   } else if(c=="help") {
-    printOnTerminal(`Commands available are: ${currentFilePath.listAvailableCommands()}. As you type in commands you can reuse your previous commands by using the up and down arrow.`);
+    let goUp = (currentFilePath.name=="portfolio") ? "" : "To go up one directory, type in \"out\".";
+    let extra = (arrowKeyHelpMessageCounter<1) ? "As you type in commands you can reuse your previous commands by using the up and down arrow. " + goUp : goUp;
+    arrowKeyHelpMessageCounter+=1;
+    printOnTerminal(`Commands available are: ${currentFilePath.listAvailableCommands()}. ${extra}`);
   } else if(c=="projects") {
     var table = new AsciiTable('Comlab Projects')
 table
@@ -443,7 +449,7 @@ printOnTerminal();
   }
   commandHistoryMarker = commandHistory.length;
   currentCommandTyped = ""
-  w(".new-output").scrollIntoView(); //make screen scroll down as new outputs come on the terminal
+
 }
 
 if(window.localStorage.getItem('user')!== null) { //if user already logged in, set the variables accordingly
@@ -453,9 +459,8 @@ if(window.localStorage.getItem('user')!== null) { //if user already logged in, s
   let data = JSON.parse(window.localStorage.getItem('user'));
   username = data.username;
   password = data.password;
-  commandContext = username + "@portfolio > ";
+  setCommandContext();
   currentCommandTyped = "";
-  w("title").html("ssh " + username + "@portfolio")
 }
 
 runCommand("clear", false);

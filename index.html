@@ -8,17 +8,24 @@
      <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
      <link rel="stylesheet" href="styles/bootstrap.custom.css" >
      <link rel="stylesheet" href="styles/bootstrap-grid.min.css" >
-    <link rel="stylesheet" href="styles/style.css">
-    <title> ssh anonymous@portfolio </title>
-     <link rel="shortcut icon" href="assets/favicon.ico" type="image/png"></link>
-     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+     <link rel="stylesheet" href="styles/style.css">
+    <title> ssh anonymous@portfolio </title> <!-- default title that will be changed as the command context changes -->
+     <link rel="shortcut icon" href="assets/favicon.ico" type="image/png"></link> <!-- favicon of a terminal -->
+     <link rel="icon" href="assets/favicon.ico" type="image/x-icon"> <!-- favicon of a terminal -->
    </head>
   <body>
     <div class="container">
+
+      <!-- Displayed in all laptops and PCs -->
       <div class="terminal d-none d-sm-block" id="terminal"></div>
+      <!-- End Div Displayed in all laptops and PCs -->
+
+      <!-- Displayed only in phones -->
       <div class="terminal d-sm-none">
         <div class="promptNoBefore new-output"> > Can't open terminal on mobile. Please open in pc or laptop to view portfolio.</div>
       </div>
+      <!-- End Displayed only in phones -->
+
     </div>
     <!-- Javascript dependancies -->
      <script src="scripts/ascii-table.min.js"></script>

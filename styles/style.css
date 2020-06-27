@@ -11,7 +11,7 @@
 decided to host on google fonts based on the network stats that it uses less space
 */
 
-@-webkit-keyframes cursor-blink {
+@-webkit-keyframes cursor-blink { /*css animation for the cursor blink taken from a codepen*/
   0% {
     opacity: 0;
   }
@@ -22,7 +22,7 @@ decided to host on google fonts based on the network stats that it uses less spa
     opacity: 0;
   }
 }
-@-moz-keyframes cursor-blink {
+@-moz-keyframes cursor-blink { /*css animation for the cursor blink taken from a codepen*/
   0% {
     opacity: 0;
   }
@@ -33,7 +33,7 @@ decided to host on google fonts based on the network stats that it uses less spa
     opacity: 0;
   }
 }
-@keyframes cursor-blink {
+@keyframes cursor-blink { /*css animation for the cursor blink taken from a codepen*/
   0% {
     opacity: 0;
   }
@@ -47,18 +47,18 @@ decided to host on google fonts based on the network stats that it uses less spa
 
 html, body {
   cursor : none;
-  background-color: black;
+  background-color: black; /* black bg for terminal vibe */
 }
 
-.terminal {
+.terminal {  /*actual terminal holder*/
   position: relative;
   padding-top: 25px;
 }
 
-.terminal .prompt {
+.terminal .prompt { /* styling for each prompt*/
   color: #1ff042;
   display: block;
-  font-family: 'Source Code Pro', monospace;
+  font-family: 'Source Code Pro', monospace; /* source code pro font, used for terminals usually*/
   font-weight: bold;
   font-size: 12pt;
   letter-spacing: 0.15em;
@@ -68,15 +68,15 @@ html, body {
   margin-bottom: 0.75em;
 }
 
- .terminal .prompt:before {
+ .terminal .prompt:before { /* for the command context text (the username@directory > thing) */
   content: attr(command-context);
   display: inline-block;
 }
 
-.terminal .promptNoBefore {
+.terminal .promptNoBefore { /* for prompts that don't have a command conext text */
   color: #1ff042;
   display: block;
-  font-family: 'Source Code Pro', monospace;
+  font-family: 'Source Code Pro', monospace; /* source code pro font, used for terminals usually*/
   font-weight: bold;
   font-size: 12pt;
   letter-spacing: 0.15em;
@@ -86,12 +86,12 @@ html, body {
   margin-bottom: 0.75em;
 }
 
-.terminal .new-output {
+.terminal .new-output { /* styling for a new prompt */
   display: inline-block;
   line-height: 1.5;
 }
 
-.terminal .new-output:after { /* cursor blink taken from a codepen */
+.terminal .new-output:after { /* cursor blink animation taken from a codepen */
   display: inline-block;
   vertical-align: -0.15em;
   width: 0.75em;
@@ -105,6 +105,6 @@ html, body {
   content: '';
 }
 
-.text-center {
+.text-center { /* reimplementing this class from bootstrap that was not in my customized bootstrap build*/
   text-align: center !important;
 }

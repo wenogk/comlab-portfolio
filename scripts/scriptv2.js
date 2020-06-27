@@ -428,8 +428,13 @@ printOnTerminal();
     location.reload(); //getParentFileTreeNode
   } else if(c=="out") { //listSubfiles
     currentFilePath = getParentFileTreeNode(currentFilePath);
-    setCommandContext();
-    printOnTerminal();
+    if(currentFilePath.name!="portfolio") {
+      setCommandContext();
+      runCommand(currentFilePath.name);
+    } else {
+      setCommandContext();
+      printOnTerminal();
+    }
   } else if(c=="list") {
     printOnTerminal(currentFilePath.listSubfiles());
   } else if(c=="") {

@@ -267,7 +267,7 @@ function authorization(value) { //function  that handles the authorization of th
 function setCommandContext() { //setting the command context, the stuff before the > in the terminal
   let filePath = getFilePathFromFileTreeNode(currentFilePath).join("/") //getting the full file path from the current directory FileTreeNode object
   commandContext = `${username}@${filePath} > `; //template literal to for the command context string
-  w('title').html(`ssh ${commandContext.slice(0, -2)}`);
+  w('title').html(`ssh ${commandContext.slice(0, -2)}`); //setting the title of the website to the ssh directory
 }
 
 function checkFilePathAndRunCommand(command) {
@@ -285,7 +285,8 @@ function runCommand(command , saveToHistory = true) { //run command function, se
   let keepCommandContext = false;
   let c = command.replace(/\s+/g,' ').trim(); //remove any extra white space on either end of string
   let args = c.split(' ')
-  if(c=="clear") {
+  if(c=="clear") { //clear command resets the terminal but shows the original prompt always
+    //the "ME" variable is the ASCII media which is in the media.js file
     w('#terminal').html(`
       <div class="container d-flex h-100">
       <div class="row ">
@@ -297,13 +298,13 @@ function runCommand(command , saveToHistory = true) { //run command function, se
       </div>
       </div>
     <p class="prompt output new-output" command-context="${commandContext}"></p>`);
-  } else if(c=="help") {
-    let goUp = (currentFilePath.name=="portfolio") ? "" : "To go up one directory, type in \"out\".";
+  } else if(c=="help") { //help command
+    let goUp = (currentFilePath.name=="portfolio") ? "" : "To go up one directory, type in \"out\"."; //only if the user is not in the top level directory will we want to tell the user the out command is usable
     let extra = (arrowKeyHelpMessageCounter<1) ? "As you type in commands you can reuse your previous commands by using the up and down arrow. " + goUp : goUp;
-    arrowKeyHelpMessageCounter+=1;
+    arrowKeyHelpMessageCounter+=1; //so that we can show the arrow key help message only once lol
     printOnTerminal(`Commands available are: ${currentFilePath.listAvailableCommands()}. ${extra}`);
   } else if(c=="projects") {
-    var table = new AsciiTable('Comlab Projects')
+    var table = new AsciiTable('Comlab Projects') //using this cool library that builds an ascii string table based on your input
 table
   .setHeading('Name','Command for more info')
   .addRow('Convinience Store Tour', "p1")
@@ -311,10 +312,10 @@ table
   .addRow('Flight: A turbulent experience', "p3")
   .addRow('GTA NYU Abu Dhabi', "p4")
 
-printOnTerminal(table.toString(),true)
-printOnTerminal();
-} else if(c.startsWith("open ") && args.length>1) {
-  switch(args[1]) {
+printOnTerminal(table.toString(),true) //print the table to the terminal
+printOnTerminal(); //you will see these empty printOnTerminal's all around, basically means a new terminal prompt is made so the user can type in it afresh
+} else if(c.startsWith("open ") && args.length>1) { //open ___ command, args should be more than 1
+  switch(args[1]) { //switch statement cus repetiitive logic of just opening a url
     case "p1":
       openUrl("https://wenogk.github.io/comlab-assignment-1/")
       printOnTerminal()
@@ -343,11 +344,11 @@ printOnTerminal();
       openUrl("https://facebook.com/iwenogk")
       printOnTerminal()
       break;
-    default:
+    default: //if second arg doesnt match with anything, display error message
       printOnTerminal("Option doesn't exist. Options are p1, p2, p3, p4, insta, github, fb")
   }
 
-} else if((c.startsWith("doc ") || c.startsWith("docs ")) && args.length>1) {
+} else if((c.startsWith("doc ") || c.startsWith("docs ")) && args.length>1) { // doc ____ command, args more than 1
   switch(args[1]) {
     case "p1":
       openUrl("https://github.com/wenogk/comlab-assignment-1/blob/master/README.md")
@@ -365,14 +366,14 @@ printOnTerminal();
       openUrl("https://github.com/wenogk/gta-nyuad/blob/master/README.md")
       printOnTerminal()
       break;
-    default:
+    default: //if 2nd arg doesnt match with anything, display error message
       printOnTerminal("Incorrect assignment name. Options are p1, p2, p3 or p4.")
   }
 
-} else if(c=="about") {
+} else if(c=="about") { //about command, just printing some info about me on the terminal.
     printOnTerminal(`I'm Sri Lankan and currently studying Computer Science at New York University Abu Dhabi. I really like backend development and am currently learning iOS app development in Swift. I enjoy optimizing things (pfft, this whole site is under 150kb). In my free time I play pool, table tennis and watch tv shows with my friends. <br /><br />To check out my socials, type in "open github", "open insta" or "open fb"`, true);
     printOnTerminal();
-  } else if(c=="p1") {
+  } else if(c=="p1") { //project 1, the "NYU_TORCH" variable is the ASCII media which is in the media.js file
     printOnTerminal(`
       <div class="container d-flex h-100">
       <div class="row">
@@ -382,9 +383,9 @@ printOnTerminal();
       <div class="col promptNoBefore align-middle justify-content-center align-self-center">A student life tours website with a video tour of the convinience store. The websote is NYU themed and tries to emulate the official NYU webpages. It also tries to invite viewers to sign up for tours on campus. <br /><br />Type in "open p1" to see the project live or "doc p1" to see the documentation</div>
       </div>
       </div>
-      `, true)
+      `, true) //second arg true cus we dont want the command context displayed
     printOnTerminal()
-  } else if(c=="p2") {
+  } else if(c=="p2") {  //project 2, the "PERIODS" variable is the ASCII media which is in the media.js file
     printOnTerminal(`
       <div class="container d-flex h-100">
       <div class="row">
@@ -394,9 +395,9 @@ printOnTerminal();
       <div class="col promptNoBefore align-middle justify-content-center align-self-center">A comic that deals with the taboo of menstruation. The website has dynamic animated transitions between panels, allows for three different languages and has user options as the user reads the comic.<br /><br />Type in "open p2" to see the project live or "doc p2" to see the documentation</div>
       </div>
       </div>
-      `, true)
+      `, true) //second arg true cus we dont want the command context displayed
     printOnTerminal()
-  } else if(c=="p3") {
+  } else if(c=="p3") {  //project 3, the "PLANE" variable is the ASCII media which is in the media.js file
       printOnTerminal(`
       <div class="container d-flex">
       <div class="row">
@@ -406,9 +407,9 @@ printOnTerminal();
       <div class="col promptNoBefore align-middle justify-content-center align-self-center">A turbulent sound journey in a plane. The website includes animations that are synced up to the audio to immerse the user. <br/><br/> Type in "open p3" to see the project live or "doc p3" to see the documentation</div>
       </div>
       </div>
-      `, true)
+      `, true) //second arg true cus we dont want the command context displayed
     printOnTerminal()
-  } else if(c=="p4") {
+  } else if(c=="p4") {  //project 4, the "GTA" variable is the ASCII media which is in the media.js file
     printOnTerminal(`
       <div class="container d-flex">
       <div class="row">
@@ -418,58 +419,58 @@ printOnTerminal();
       <div class="col promptNoBefore align-middle justify-content-center align-self-center">Grand Theft Auto themed NYUAD experience in both video and website format. <br/><br/> Type in "open p4" to see the project live or "doc p4" to see the documentation</div>
       </div>
       </div>
-      `, true)
+      `, true) //second arg true cus we dont want the command context displayed
     printOnTerminal()
-  } else if(c=="message") {
+  } else if(c=="message") { //message command, basically listen to user input for message and when that is entered the sendMessage will be called
     commandContext = "Enter Message > ";
     printOnTerminal();
-    enterMessageMode = true;
+    enterMessageMode = true; //so that at the next enter key the sendMessage will be called
   } else if(c=="logout") {
     window.localStorage.clear();
     location.reload(); //getParentFileTreeNode
-  } else if(c=="out") { //listSubfiles
-    currentFilePath = getParentFileTreeNode(currentFilePath);
-    if(currentFilePath.name!="portfolio") {
+  } else if(c=="out") { //out command, similar to cd .. in terminal
+    currentFilePath = getParentFileTreeNode(currentFilePath); //get the parent FileTreeNode
+    if(currentFilePath.name!="portfolio") { //as long as the current node is not the root, run the parent command and change context ditectory back to that parent directory
       setCommandContext();
       runCommand(currentFilePath.name);
-    } else {
+    } else { //of current node is portfolio, simply start a new terminal prompt
       setCommandContext();
       printOnTerminal();
     }
-  } else if(c=="list") {
-    printOnTerminal(currentFilePath.listSubfiles());
-  } else if(c=="") {
-    commandValid = false;
+  } else if(c=="list") { //list command, to list the directories in currect directory that are available, similar to ls in normal terminal
+    printOnTerminal(currentFilePath.listSubfiles()); //simply print using the FileTreeNode listSubfiles function I wrote
+  } else if(c=="") { //if the command is just empty, start a new prompt line, just as the normal terminal would.
+    commandValid = false; //command isnt valid obviously
     printOnTerminal();
   } else {
-    commandValid = false;
+    commandValid = false; //if none of these match it means the user typed some random command that doesn't exist or is not available under the current directory so print an error message
     printOnTerminal(`Oops. That command is not recognized. Type in "help"`)
   }
-  if(commandValid && (saveToHistory)) {
-    if(commandHistory[commandHistory.length-1]!=c) {
+  if(commandValid && (saveToHistory)) { //if the command is valid, save it to the history so the user can access it using arrow keys
+    if(commandHistory[commandHistory.length-1]!=c) { //if the current command is not the same as the previous command typed, i.e don't have consecutively repeated commands in the history
       let len = commandHistory.length;
-      let maxHistoryValues = 4;
+      let maxHistoryValues = 4; //the history array will only remember the last 4 commands. arbitrary value that I chose lol
       if(len > maxHistoryValues){
-        commandHistory.splice( 0, len - maxHistoryValues);
+        commandHistory.splice( 0, len - maxHistoryValues); //code to restrict to the max num of history values
       }
       commandHistory.push(c)
     }
   }
-  commandHistoryMarker = commandHistory.length;
-  currentCommandTyped = ""
+  commandHistoryMarker = commandHistory.length; //bring the command history marker back to the end so the user can use it normally for the next prompt
+  currentCommandTyped = "" //reset the command typed for the next command to be typed
 
 }
 
-if(window.localStorage.getItem('user')!== null) { //if user already logged in, set the variables accordingly
-  enterUsernameMode = false;
-  enterPasswordMode = false;
-  authorized = true;
-  let data = JSON.parse(window.localStorage.getItem('user'));
-  username = data.username;
-  password = data.password;
-  setCommandContext();
-  currentCommandTyped = "";
+if(window.localStorage.getItem('user')!== null) { //if user already logged in, set the variables accordingly from the local storage
+  enterUsernameMode = false; //so the username mode is not loaded by default as usual
+  enterPasswordMode = false;  //so the password mode is not loaded by default for any reason
+  authorized = true; //user has already logged in so is authorized and can call commands now.
+  let data = JSON.parse(window.localStorage.getItem('user')); //get the user object stored in cookies and parse as JSON cus we stringified it before
+  username = data.username; // set the username
+  password = data.password; // set the password
+  setCommandContext(); // set the "username@directory > " command context now
+  currentCommandTyped = ""; // reset the command typed.
 }
 
-runCommand("clear", false);
-console.log(INCEPTION)
+runCommand("clear", false); //clear the terminal on load.
+console.log(INCEPTION) //little easter egg in console.log

@@ -246,7 +246,7 @@ printOnTerminal();
   }
 
 } else if(c=="about") {
-    printOnTerminal(`I'm Sri Lankan and currently studying Computer Science at New York University Abu Dhabi. I really like backend development and am currently learning iOS app development in Swift. I like optimizing things (pfft, this whole site is under 150kb). In my free time I like to play pool, table tennis and watch tv shows with my friends. <br /><br />To check out my socials, type in "open github", "open insta" or "open fb"`, true);
+    printOnTerminal(`I'm Sri Lankan and currently studying Computer Science at New York University Abu Dhabi. I really like backend development and am currently learning iOS app development in Swift. I enjoy optimizing things (pfft, this whole site is under 150kb). In my free time I play pool, table tennis and watch tv shows with my friends. <br /><br />To check out my socials, type in "open github", "open insta" or "open fb"`, true);
     printOnTerminal();
   } else if(c=="p1") {
     printOnTerminal(`

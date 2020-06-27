@@ -8,7 +8,7 @@ let authorized = false;
 let enterUsernameMode = true;
 let enterPasswordMode = false;
 let enterMessageMode = false;
-function $(selector) { //to remove the jQuery dependancy from the code with minimal changes, I rewrote only the functions I needed so I won't be wasting space loading the entire jQuery library
+function w(selector) { //to remove the jQuery dependancy from the code with minimal changes, I rewrote only the functions I needed so I won't be wasting space loading the entire jQuery library
 return document.querySelector(selector);
 }
 
@@ -46,24 +46,24 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
     let letter = String.fromCharCode(charCode).toLowerCase(); //char number to actual letter which is then forced to lowercase so even upper case cheat codes r good
     if (event.keyCode >= 48 && event.keyCode <= 57) { //if number 0-9
       if(isNotMaxCharacters && !enterUsernameMode) currentCommandTyped+= String(event.keyCode-48);
-      if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
-      else $(".new-output").text(toHidden(currentCommandTyped))
+      if(!enterPasswordMode) w(".new-output").text(currentCommandTyped)
+      else w(".new-output").text(toHidden(currentCommandTyped))
     } else if (event.keyCode >= 65 && event.keyCode <= 90) { //if letter a-z
       if(isNotMaxCharacters) currentCommandTyped+=letter;
-      if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
-      else $(".new-output").text(toHidden(currentCommandTyped))
+      if(!enterPasswordMode) w(".new-output").text(currentCommandTyped)
+      else w(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 189) { // dash key "-"
       if(isNotMaxCharacters && !enterUsernameMode)currentCommandTyped+="-";
-      if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
-      else $(".new-output").text(toHidden(currentCommandTyped))
+      if(!enterPasswordMode) w(".new-output").text(currentCommandTyped)
+      else w(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 32) { // space bar hit
       if(!enterUsernameMode && isNotMaxCharacters) currentCommandTyped+=" ";
-      if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
-      else $(".new-output").text(toHidden(currentCommandTyped))
+      if(!enterPasswordMode) w(".new-output").text(currentCommandTyped)
+      else w(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 8) { // back space hit
       currentCommandTyped = currentCommandTyped.slice(0,-1); //remove last character
-      if(!enterPasswordMode) $(".new-output").text(currentCommandTyped)
-      else $(".new-output").text(toHidden(currentCommandTyped))
+      if(!enterPasswordMode) w(".new-output").text(currentCommandTyped)
+      else w(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 13) { // enter key hit
       if(!authorized) {
         authorization(currentCommandTyped);
@@ -82,17 +82,17 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
       if(commandHistoryMarker>0){
         commandHistoryMarker-=1;
         currentCommandTyped = commandHistory[commandHistoryMarker]
-        $(".new-output").text(currentCommandTyped);
+        w(".new-output").text(currentCommandTyped);
       }
     } else if (event.keyCode === 40) { // down arrow key for front
       e.preventDefault();
       if(commandHistoryMarker<commandHistory.length-1){
         commandHistoryMarker+=1;
         currentCommandTyped = commandHistory[commandHistoryMarker]
-        $(".new-output").text(currentCommandTyped);
+        w(".new-output").text(currentCommandTyped);
       } else if(commandHistoryMarker == commandHistory.length-1 && currentCommandTyped==commandHistory[commandHistory.length-1]) {
         currentCommandTyped = "";
-        $(".new-output").text(currentCommandTyped);
+        w(".new-output").text(currentCommandTyped);
       }
     } //38 40 down)
 };
@@ -127,11 +127,11 @@ function openUrl(url) {
   }
 }
 function printOnTerminal(txt="",noBefore = false) {
-  $('.new-output').removeClass('new-output');
+  w('.new-output').removeClass('new-output');
   if(txt!="") {
-    $('#terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output" command-context="${commandContext}">${txt}</p><p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`);
+    w('#terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output" command-context="${commandContext}">${txt}</p><p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`);
   } else{
-    $('#terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`);
+    w('#terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`);
   }
 }
 
@@ -153,7 +153,7 @@ function authorization(value) {
     enterPasswordMode = false;
     authorized = true;
     commandContext = username + "@portfolio > ";
-    $("title").html("ssh " + username + "@portfolio")
+    w("title").html("ssh " + username + "@portfolio")
     currentCommandTyped = "";
     runCommand("clear");
   }
@@ -165,7 +165,7 @@ function runCommand(command , saveToHistory = true) {
   let c = command.replace(/\s+/g,' ').trim(); //remove any extra white space on either end of string
   let args = c.split(' ')
   if(c=="clear") {
-    $('#terminal').html(`
+    w('#terminal').html(`
       <div class="container d-flex h-100">
       <div class="row ">
       <div class="col-md-3 promptNoBefore justify-content-center align-self-center text-center" style="font-size: 4px; min-width: 300px;">
@@ -322,7 +322,7 @@ printOnTerminal();
   }
   commandHistoryMarker = commandHistory.length;
   currentCommandTyped = ""
-  $(".new-output").scrollIntoView(); //make screen scroll down as new outputs come on the terminal
+  w(".new-output").scrollIntoView(); //make screen scroll down as new outputs come on the terminal
 }
 
 if(window.localStorage.getItem('user')!== null) { //if user already logged in, set the variables accordingly
@@ -334,7 +334,7 @@ if(window.localStorage.getItem('user')!== null) { //if user already logged in, s
   password = data.password;
   commandContext = username + "@portfolio > ";
   currentCommandTyped = "";
-  $("title").html("ssh " + username + "@portfolio")
+  w("title").html("ssh " + username + "@portfolio")
 }
 
 runCommand("clear", false);

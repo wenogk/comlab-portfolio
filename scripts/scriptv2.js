@@ -113,6 +113,8 @@ const portfolio = new FileTreeNode('portfolio',['projects','message','about']);
 
 let currentFilePath = portfolio; //the initial file path is obviously the portfolio.
 
+
+//the w function here is similar to jquery's $, I just wanted a few easy functions for reuse.
 function w(selector) { //to remove the jQuery dependancy from the code with minimal changes, I rewrote only the functions I needed so I won't be wasting space loading the entire jQuery library
 return document.querySelector(selector);
 }
@@ -143,7 +145,7 @@ HTMLElement.prototype.removeClass = function(remove) { //similar to jquery's $(e
 function toHidden(password) { //simple function that returns a string of asterisks with the same length as the input string, this is used for the password entry.
   return "*".repeat(password.length);
 }
-document.onkeydown = function(e) { //key press event listener for terminal typing
+document.onkeydown = function(e) { //key press event listener for terminal typing / enter / backspace / arrow keys etc.
     e = e || window.event;
     if (e.ctrlKey || e.metaKey) { return;} //to ignore when cmd+r / ctrl+r is pressed
     let isNotMaxCharacters = ((!authorized && currentCommandTyped.length<12) || authorized);
@@ -170,38 +172,38 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
       if(!enterPasswordMode) w(".new-output").text(currentCommandTyped)
       else w(".new-output").text(toHidden(currentCommandTyped))
     } else if(event.keyCode === 13) { // enter key hit
-      if(!authorized) {
+      if(!authorized) { //if not authorized call the authorization function and don't execute the command
         authorization(currentCommandTyped);
       } else {
-        if(enterMessageMode) {
-          sendMessage(currentCommandTyped);
+        if(enterMessageMode) { //if in message mode and enter is clicked it means the user finished typing their message and hit enter, so send the message to the API
+          sendMessage(currentCommandTyped); //function that calls the email API and sends the message
           enterMessageMode = false;
-          commandContext = username + "@portfolio > ";
+          setCommandContext(); //reset the command context text from "enter a message > " back to the correct file directory and username
           currentCommandTyped = "";
         } else {
-          checkFilePathAndRunCommand(currentCommandTyped);
+          checkFilePathAndRunCommand(currentCommandTyped); //call function that checks the file path and if the command typed is available using our FileTreeNode object and then running it.
         }
       }
-    } else if (event.keyCode === 38) { //up arrow key for back
+    } else if (event.keyCode === 38) { //up arrow key for previous command typed
       e.preventDefault();
       if(commandHistoryMarker>0){
-        commandHistoryMarker-=1;
+        commandHistoryMarker-=1; //move the command history index marker
         currentCommandTyped = commandHistory[commandHistoryMarker]
-        w(".new-output").text(currentCommandTyped);
+        w(".new-output").text(currentCommandTyped); //set the prompt to the correct command
       }
-    } else if (event.keyCode === 40) { // down arrow key for front
+    } else if (event.keyCode === 40) { // down arrow key for next command typed when user has hit the arrow key back
       e.preventDefault();
       if(commandHistoryMarker<commandHistory.length-1){
-        commandHistoryMarker+=1;
+        commandHistoryMarker+=1; //move the command history index marker
         currentCommandTyped = commandHistory[commandHistoryMarker]
         w(".new-output").text(currentCommandTyped);
       } else if(commandHistoryMarker == commandHistory.length-1 && currentCommandTyped==commandHistory[commandHistory.length-1]) {
         currentCommandTyped = "";
-        w(".new-output").text(currentCommandTyped);
+        w(".new-output").text(currentCommandTyped); //set the prompt to the correct command
       }
     } //38 40 down)
 };
-function sendMessage(message) {
+function sendMessage(message) { //simple function that posts some form data (the user's name and message) as a formdata object to a free API that will email me the response directly.
   let xmlHttp = new XMLHttpRequest();
   let formData = new FormData();
   formData.append("_subject","Comlab portfolio msg");
@@ -210,20 +212,18 @@ function sendMessage(message) {
         {
             if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
             {
-              msgSuccess(); //console.log(xmlHttp.responseText);
+              msgSuccess(); //callback to print success message back to user
             }
         }
         xmlHttp.open("post", "https://formsubmit.co/ajax/drf325@nyu.edu");
         xmlHttp.send(formData);
 }
 
-function msgSuccess() {
+function msgSuccess() { //message sent successfully
   printOnTerminal("Your message was sent directly to Romeno's email.")
 }
-function msgFail() {
-  printOnTerminal("Error occured when sending message.")
-}
-function openUrl(url) {
+
+function openUrl(url) { //function that attempts to open a URL in a new tab, if it fails (possibly becuase of popup blockers) it will open the url in the same tab, if it successful tho, it will set the focus to that new tab.
   var win = window.open(url, '_blank');
   if(!win || win.closed || typeof win.closed=='undefined') { //if popups are blocked in user system change current url
     document.location.href = url;
@@ -231,56 +231,56 @@ function openUrl(url) {
     win.focus();
   }
 }
-function printOnTerminal(txt="",noBefore = false) {
-  w('.new-output').removeClass('new-output');
+function printOnTerminal(txt="",noBefore = false) { //function to print on the terminal UI. the noBefore arg basically means no command context (no user@portfolio > stuff)
+  w('.new-output').removeClass('new-output'); //cus this element that has the new-output class is now old and we are gonna make a new one for the current print call
   if(txt!="") {
-    w('#terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output" command-context="${commandContext}">${txt}</p><p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`);
+    w('#terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output" command-context="${commandContext}">${txt}</p><p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`); //template literal that puts in the relevant classes and html content based on args
   } else{
     w('#terminal').append(`<p class="${noBefore ? "promptNoBefore" : "prompt"} output new-output" command-context="${commandContext}"></p>`);
   }
   w(".new-output").scrollIntoView(); //make screen scroll down as new outputs come on the terminal
 }
 
-function authorization(value) {
+function authorization(value) { //function  that handles the authorization of the user including setting username and password values as well as persistance of this information in the local cookie storage of the browser
   if(enterUsernameMode) {
-    username = value;
-    enterUsernameMode = false;
+    username = value; //setting username after user has typed in and hit enter
+    enterUsernameMode = false; //username has been entered so now its time to enter the password
     enterPasswordMode = true;
     commandContext = "Set Password > ";
-    currentCommandTyped = "";
+    currentCommandTyped = ""; //reset the command typed
     printOnTerminal();
   } else if(enterPasswordMode) {
-    password = value;
-    const user = {
+    password = value; //setting password after user has typed in and hit enter
+    const user = { //user object to store in local storage
     username: username,
     password: password,
     }
-    window.localStorage.setItem('user', JSON.stringify(user));
-    enterPasswordMode = false;
-    authorized = true;
-    setCommandContext()
-    currentCommandTyped = "";
-    runCommand("clear");
+    window.localStorage.setItem('user', JSON.stringify(user)); //actually storing user data in local storage
+    enterPasswordMode = false; //password has been entered so authorization is complete
+    authorized = true; //set authorized to true so this function won't be called again
+    setCommandContext() //set the command context text in terminal to have username@directory >
+    currentCommandTyped = ""; //reset the command typed
+    runCommand("clear"); //clears the terminal
   }
 }
 
-function setCommandContext() {
-  let filePath = getFilePathFromFileTreeNode(currentFilePath).join("/")
-  commandContext = `${username}@${filePath} > `;
+function setCommandContext() { //setting the command context, the stuff before the > in the terminal
+  let filePath = getFilePathFromFileTreeNode(currentFilePath).join("/") //getting the full file path from the current directory FileTreeNode object
+  commandContext = `${username}@${filePath} > `; //template literal to for the command context string
   w('title').html(`ssh ${commandContext.slice(0, -2)}`);
 }
 
 function checkFilePathAndRunCommand(command) {
-  if(currentFilePath.isValidFileTreeCommand(command)) {
+  if(currentFilePath.isValidFileTreeCommand(command)) { //check with FileTreeNode's availableCommands property to see if the current command is acceptable for the current directory
     currentFilePath = currentFilePath.returnSubfile(command);
     setCommandContext();
-    runCommand(command);
+    runCommand(command); //finally actually call the run command function to run the command
   } else {
-    runCommand("9999999");
+    runCommand("9999999"); //the 999999 is just a trick, this means there won't be any command matched so the default error message will be displayed in the terminal which is exactly what we want
   }
 }
 
-function runCommand(command , saveToHistory = true) {
+function runCommand(command , saveToHistory = true) { //run command function, second argument is for whether I want to save it in the command history so the user can access it using the arrow keys
   let commandValid = true;
   let keepCommandContext = false;
   let c = command.replace(/\s+/g,' ').trim(); //remove any extra white space on either end of string

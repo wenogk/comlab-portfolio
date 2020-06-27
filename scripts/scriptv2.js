@@ -13,10 +13,16 @@ class FileTreeNode {
   constructor(value, commands) {
     this.name = value;
     this.subfiles = [];
-    this.availableCommands = [...commands, "clear","logout","help","","out","list"];
+    this.availableCommands = [...commands,"out","list","clear","logout","help",""];
   }
   listAvailableCommands() {
-    return this.availableCommands.join(', ');
+    let pretty = []
+    for (let x in this.availableCommands) {
+      if(this.availableCommands[x] != "" && this.availableCommands[x] != "help") {
+        pretty.push(this.availableCommands[x])
+      }
+    }
+    return pretty.join(', ');
   }
 
   listSubfiles() {
@@ -93,10 +99,10 @@ function getFilePathFromFileTreeNode(file) { //recursive function to get parent 
 const portfolio = new FileTreeNode('portfolio',['projects','message','about']);
   const about = new FileTreeNode('about',['open insta','open fb','open github']);
   const projects = new FileTreeNode('projects',['p1','p2','p3','p4']);
-    const p1 = new FileTreeNode('p1', ['open p1','doc p1','docs p1']);
-    const p2 = new FileTreeNode('p2', ['open p2','doc p2','docs p2']);
-    const p3 = new FileTreeNode('p3' ,['open p3','doc p3','docs p3']);
-    const p4 = new FileTreeNode('p4' ,['open p4','doc p4','docs p4']);
+    const p1 = new FileTreeNode('p1', ['open p1','doc p1']);
+    const p2 = new FileTreeNode('p2', ['open p2','doc p2']);
+    const p3 = new FileTreeNode('p3' ,['open p3','doc p3']);
+    const p4 = new FileTreeNode('p4' ,['open p4','doc p4']);
     projects.subfiles.push(p1, p2, p3, p4);
   portfolio.subfiles.push(projects, about);
 

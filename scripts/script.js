@@ -389,7 +389,7 @@ printOnTerminal(); //you will see these empty printOnTerminal's all around, basi
     printOnTerminal(`
       <div class="container d-flex h-100">
       <div class="row">
-      <div class="col-md-3 promptNoBefore justify-content-center align-self-center text-center" style="font-size: 5px; min-width: 300px;">
+      <div class="col-auto promptNoBefore justify-content-center align-self-center text-center" style="font-size: 5px; min-width: 300px;">
         <pre style="color: #1ff042; ">${PERIODS}</pre>
       </div>
       <div class="col promptNoBefore align-middle justify-content-center align-self-center">A comic that deals with the taboo of menstruation. The website has dynamic animated transitions between panels, allows for three different languages and has user options as the user reads the comic.<br /><br />Type in "open p2" to see the project live or "doc p2" to see the documentation</div>

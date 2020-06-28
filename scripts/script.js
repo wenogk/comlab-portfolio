@@ -152,7 +152,48 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
     var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
     let letter = String.fromCharCode(charCode).toLowerCase(); //char number to actual letter which is then forced to lowercase so even upper case cheat codes r good
     if (event.keyCode >= 48 && event.keyCode <= 57) { //if number 0-9
-      if(isNotMaxCharacters && !enterUsernameMode) currentCommandTyped+= String(event.keyCode-48);
+      if(isNotMaxCharacters && !enterUsernameMode) {
+        if(!event.shiftKey) { //if shift key is not pressed while typing number it is a normal number
+          currentCommandTyped+= String(event.keyCode-48);
+        } else {
+          let num = (event.keyCode - 48);
+          switch(num) { //if shift key is pressed and a number it is a symbol corresponding to the number as below
+            case 0 :
+              currentCommandTyped+= ")";
+              break;
+            case 1 :
+              currentCommandTyped+= "!";
+              break;
+            case 2 :
+              currentCommandTyped+= "@";
+              break;
+            case 3 :
+              currentCommandTyped+= "#";
+              break;
+            case 4 :
+              currentCommandTyped+= "$";
+              break;
+            case 5 :
+              currentCommandTyped+= "%";
+              break;
+            case 6 :
+              currentCommandTyped+= "^";
+              break;
+            case 7 :
+              currentCommandTyped+= "&";
+              break;
+            case 8 :
+              currentCommandTyped+= "*";
+              break;
+            case 9 :
+              currentCommandTyped+= "(";
+              break;
+            default:
+              currentCommandTyped+="";
+              break;
+          }
+        }
+      }
       if(!enterPasswordMode) w(".new-output").text(currentCommandTyped)
       else w(".new-output").text(toHidden(currentCommandTyped))
     } else if (event.keyCode >= 65 && event.keyCode <= 90) { //if letter a-z

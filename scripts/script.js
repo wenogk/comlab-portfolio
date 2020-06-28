@@ -155,7 +155,7 @@ document.onkeydown = function(e) { //key press event listener for terminal typin
       if(isNotMaxCharacters && !enterUsernameMode) {
         if(!event.shiftKey) { //if shift key is not pressed while typing number it is a normal number
           currentCommandTyped+= String(event.keyCode-48);
-        } else {
+        } else if(enterMessageMode) {
           let num = (event.keyCode - 48);
           switch(num) { //if shift key is pressed and a number it is a symbol corresponding to the number as below
             case 0 :
